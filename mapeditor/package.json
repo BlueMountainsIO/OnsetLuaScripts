@@ -1,0 +1,18 @@
+{
+	"author": "Blue Mountains",
+	"version": "1.0",
+	"server_scripts": [
+		"server/editor.lua"
+	],
+	"client_scripts": [
+		"client/editor.lua"
+	],
+	"files": [
+		"client/gui/editor.html",
+		"client/gui/editor.css",
+		"client/gui/editor.js",
+		"client/gui/jquery.js",
+		"client/gui/OpenSansRegular.woff2",
+		"client/gui/OpenSansBold.woff2"
+	]
+}

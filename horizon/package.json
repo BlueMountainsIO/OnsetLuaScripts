@@ -1,0 +1,41 @@
+{
+	"author": "Blue Mountains",
+	"version": "1.0",
+	"server_scripts": [
+		"server/scriptconfig.lua",
+		"server/maps.lua",
+		"server/database.lua",
+		"server/accounts.lua",
+		"server/admin_commands.lua",
+		"server/commands.lua",
+		"server/functions.lua",
+		"server/vendor/format_num.lua",
+		"server/gameplay.lua",
+		"server/chat.lua",
+		"server/teleports.lua",
+		"scoreboard/scoreboard_s.lua",
+		"banking/atm_s.lua"
+	],
+	"client_scripts": [
+		"client/world.lua",
+		"client/esp.lua",
+		"scoreboard/scoreboard_c.lua",
+		"banking/atm_c.lua"
+	],
+	"files": [
+		"client/files/cashfallclub.mp3",
+		"client/files/cashfall2.mp3",
+		"client/files/cashfall.gif",
+		"client/files/snoop.gif",
+		"client/files/banana.gif",
+		"client/files/AnimatedBanana.PNG",
+		"client/files/AnimatedPortal.PNG",
+		"client/files/AI.png",
+		"scoreboard/gui/scoreboard.html",
+		"scoreboard/gui/scoreboard.css",
+		"scoreboard/gui/scoreboard.js",
+		"scoreboard/gui/jquery.js",
+		"scoreboard/gui/xbbcode.js",
+		"scoreboard/gui/xbbcode.css"
+	]
+}

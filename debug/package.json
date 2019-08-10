@@ -1,0 +1,15 @@
+{
+	"author": "Blue Mountains",
+	"version": "1.0",
+	"server_scripts": [
+		"debug_s.lua"
+	],
+	"client_scripts": [
+		"debug_c.lua"
+	],
+	"files": [
+		"gui/debug.html",
+		"gui/styles.css",
+		"gui/debug.js"
+	]
+}

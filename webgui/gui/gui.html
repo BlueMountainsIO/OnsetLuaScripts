@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>WEBGUI</title>
+    <meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+	<script>
+			(function(obj)
+			{
+				ue.game = {};
+				ue.game.callevent = function(name, ...args)
+				{
+					if (typeof name != "string") {
+						return;
+					}
+		
+					if (args.length == 0) {
+						obj.callevent(name, "")
+					}
+					else {
+						let params = []
+						for (let i = 0; i < args.length; i++) {
+							params[i] = args[i];
+						}
+						obj.callevent(name, JSON.stringify(params));
+					}
+				};
+			})(ue.game);
+			CallEvent = ue.game.callevent;
+	</script>
+
+	<link href="http://asset/webgui/gui/gui.css" rel="stylesheet" media="all">
+	<script src="http://asset/webgui/gui/jquery.js"></script>
+	<script src="http://asset/webgui/gui/gui.js"></script>
+</head>
+<body oncontextmenu="return false">
+
+	<div class="pageWrapper">
+		<div id="globalMessageBox" class="mbox">
+			<div class="mbox-content">
+			<span class="mbox-close">&times;</span>
+			<p><br><span id="mbox-message">message</span><br><br></p>
+			</div>
+		</div>
+			<div class="siteWrapper">
+
+			</div>
+	</div>
+
+</body>
+</html>

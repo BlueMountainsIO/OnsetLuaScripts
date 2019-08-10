@@ -1,0 +1,18 @@
+{
+	"author": "Blue Mountains",
+	"version": "1.0",
+	"server_scripts": [
+		"server/race.lua"
+	],
+	"client_scripts": [
+		"client/race.lua"
+	],
+	"files": [
+		"client/3.mp3",
+		"client/2.mp3",
+		"client/1.mp3",
+		"client/go.mp3",
+		"client/checkpoint.wav",
+		"client/MLG_Horn.mp3"
+	]
+}

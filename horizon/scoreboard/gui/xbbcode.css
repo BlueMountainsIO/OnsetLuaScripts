@@ -1,0 +1,27 @@
+.xbbcode-b {
+    font-weight: bold;
+}
+
+.xbbcode-i {
+    font-style: italic; 
+}
+
+.xbbcode-u {
+    text-decoration: underline;
+}
+
+.glow {
+	color: #fff;
+	-webkit-animation: glow 1s ease-in-out infinite alternate;
+	-moz-animation: glow 1s ease-in-out infinite alternate;
+	animation: glow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes glow {
+  from {
+	text-shadow: 0 0 2px #fff, 0 0 4px #228DFF, 0 0 6px #228DFF;
+  }
+  to {
+    text-shadow: 0 0 0px #fff, 0 0 1px #228DFF, 0 0 2px #228DFF;
+  }
+}

@@ -1,0 +1,22 @@
+{
+	"author": "Blue Mountains",
+	"version": "1.0",
+	"server_scripts": [
+		"server/gui.lua"
+	],
+	"client_scripts": [
+		"client/gui.lua",
+		"client/message_box.lua",
+		"client/text.lua"
+	],
+	"files": [
+		"gui/gui.html",
+		"gui/gui.css",
+		"gui/jquery.js",
+		"gui/gui.js",
+		"gui/OpenSansBold.woff2",
+		"gui/OpenSansRegular.woff2",
+		"gui/KanitBold.woff2",
+		"gui/KanitRegular.woff2"
+	]
+}

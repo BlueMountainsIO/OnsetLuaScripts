@@ -1,0 +1,29 @@
+{
+	"servername": "[g]🌴 [c=#00ff00]Onset[/c] [c=red]Prototype[/c] [c=yellow]Labs[/c] 🗽 [b]LIT AF[/b] 🚬🔥 🔫 + 💊 = 🚨 [u][b]NOICE[/b][/u] OK come on in 👀[/g]",
+	"gamemode": "GET THE EXPERIENCE ⛺ 💊",
+	"website_url": "https://playonset.com",
+	"ipaddress": "0.0.0.0",
+	"port": 7777,
+	"maxplayers": 300,
+	"password": "",
+	"timeout": 15000,
+	"iplimit": 5,
+	"masterserver": true,
+	"plugins": [
+		"mariadb",
+		"ini-plugin"
+	],
+	"packages": [
+		"webgui",
+		"horizon",
+		"vehiclejump",
+		"debug",
+		"race"
+	],
+	"stream_distance": 12000.0,
+	"stream_update_rate": 0.05,
+	"voice": true,
+	"voice_sample_rate": 24000,
+	"voice_distance": 4000.0,
+	"voice_spatialization": true
+}

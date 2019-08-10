@@ -1,0 +1,139 @@
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Open Sans Regular'), local('OpenSans-Regular'), url(http://asset/webgui/gui/OpenSansRegular.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Open Sans';
+	font-style: normal;
+	font-weight: 700;
+	src: local('Open Sans Bold'), local('OpenSans-Bold'), url(http://asset/webgui/gui/OpenSansBold.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Kanit';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Kanit Regular'), local('Kanit-Regular'), url(http://asset/webgui/gui/KanitRegular.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+	font-family: 'Kanit';
+	font-style: normal;
+	font-weight: 700;
+	src: local('Kanit Bold'), local('Kanit-Bold'), url(http://asset/webgui/gui/KanitBold.woff2) format('woff2');
+	unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+* {
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none
+}
+
+html, body {
+	font-family: "Kanit", sans-serif !important;
+	
+	color: white !important;
+	/*background-color: rgba(0, 0, 0, 0.4) !important;*/
+	
+	cursor: default;
+	
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	font-size: 1.2vh;
+}
+
+.pageWrapper {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	position: relative;
+	-webkit-box-orient: vertical;
+	-webkit-box-direction: normal;
+	-ms-flex-direction: column;
+	flex-direction: column;
+	width: 100vw;
+	height: 100vh;
+	z-index: 100;
+}
+
+.siteWrapper {
+	display: flex;
+	/*width: calc(100vw - 4vh);
+	height: 96vh;
+	margin-top: 2vh;
+	margin-left: 2vh;*/
+}
+
+img {
+	/*display: block;
+	width: auto;
+	height: auto;*/
+	max-width: calc(100% - 25vw);
+	max-height: calc(90% - 25vh);
+}
+
+.mbox {
+	display: none; /* hidden by default */
+	position: fixed; /* Stay in place */
+	z-index: 10;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	overflow: auto; /* Enable scroll if needed */
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+.mbox-content {
+	background-color: rgba(0, 0, 0, 0.8);
+	font-size: 1.5vh;
+	font-weight: bold;
+	font-family: "Open Sans", sans-serif !important;
+	margin: 10% auto; /* 15% from the top and centered */
+	padding: 15px;
+	border: 1px solid grey;
+	width: 35%;
+}
+
+.mbox-close {
+	color: #aaa;
+	float: right;
+	font-size: 4vh;
+	font-weight: bold;
+}
+
+.mbox-close:hover,
+.mbox-close:focus {
+	color: grey;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.input-button {
+	background-color: rgb(76, 139, 175);
+	border: none;
+	color: white;
+	padding: 5px 16px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+}

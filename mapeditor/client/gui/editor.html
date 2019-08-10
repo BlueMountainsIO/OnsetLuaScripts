@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+
+    <title>MAPEDITOR</title>
+    <meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+
+	<script>
+			(function(obj)
+			{
+				ue.game = {};
+				ue.game.callevent = function(name, ...args)
+				{
+					if (typeof name != "string") {
+						return;
+					}
+		
+					if (args.length == 0) {
+						obj.callevent(name, "")
+					}
+					else {
+						let params = []
+						for (let i = 0; i < args.length; i++) {
+							params[i] = args[i];
+						}
+						obj.callevent(name, JSON.stringify(params));
+					}
+				};
+			})(ue.game);
+			CallEvent = ue.game.callevent;
+	</script>
+
+	<link href="http://asset/mapeditor/client/gui/editor.css" rel="stylesheet" media="all">
+	<script src="http://asset/mapeditor/client/gui/jquery.js"></script>
+	<script src="http://asset/mapeditor/client/gui/editor.js"></script>
+</head>
+<body oncontextmenu="return false">
+		<span title="Object location in 3D space" style="font-weight: bold;">Location</span>
+		<div id="locInfo" class="objInfo">
+			<span title="X Coordinate">X: 0.0</span>
+			<span title="Y Coordinate">Y: 0.0</span>
+			<span title="Z Coordinate">Z: 0.0</span>
+		</div>
+
+		<span title="Object rotation in degrees" style="font-weight: bold;">Rotation</span>
+		<div id="rotInfo" class="objInfo">
+			<span title="Pitch">X: 0.0</span>
+			<span title="Yaw">Y: 0.0</span>
+			<span title="Roll">Z: 0.0</span>
+		</div>
+
+		<span>Editor Speed: </span><input type="number" min="1" max="100" title="Editor Speed" id="editorSpeed" value="9"><br>
+
+		<button type="button" id="objectExport">Export Map</button><br>
+
+		<hr>
+		<span style="font-weight: bold;">Object List</span>
+		<div style="height:75vh;width:100%;overflow-y:scroll;overflow-x:hidden;scrollbar-base-color:gold;">
+				
+			<div id="objectList" class="grid">
+			</div>
+		
+		</div>
+
+	<!--<div id="editorObjects" style="border: 1px solid rgba(26, 26, 26, 0.952); background-color: rgba(0, 0, 0, 0.6);">
+		As you can see, once there's enough text in this box, the box will grow scroll bars... that's why we call it a scroll box! You could also place an image into the scroll box.
+		<div id="grid">
+		</div>
+	</div>-->
+</body>
+</html>

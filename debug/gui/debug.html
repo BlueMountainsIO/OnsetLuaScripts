@@ -1,0 +1,43 @@
+<html>
+<head>
+<script>
+	(function(obj)
+	{
+		ue.game = {};
+		ue.game.callevent = function(name, ...args)
+		{
+			if (typeof name != "string") {
+				return;
+			}
+
+			if (args.length == 0) {
+				obj.callevent(name, "")
+			}
+			else {
+				let params = []
+				for (let i = 0; i < args.length; i++) {
+					params[i] = args[i];
+				}
+				obj.callevent(name, JSON.stringify(params));
+			}
+		};
+	})(ue.game);
+    CallEvent = ue.game.callevent;
+</script>
+<script src="http://asset/debug/gui/debug.js"></script>
+<link rel="stylesheet" href="http://asset/debug/gui/styles.css"> 
+</head>
+<body>
+
+<span id="localInfo" class="dataInfo">localInfo</span>
+
+<span id="clientPools" class="dataInfo">clientPools</span>
+
+<span id="serverPools" class="dataInfo">serverPools</span>
+
+<span id="netClient" class="dataInfo2">netClient</span>
+
+<span id="netServer" class="dataInfo2" style="padding-left: 10px;">netServer</span>
+
+</body>
+</html>
