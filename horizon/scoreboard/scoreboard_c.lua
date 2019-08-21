@@ -60,7 +60,7 @@ end
 AddEvent("OnKeyRelease", OnKeyRelease)
 
 function UpdateScoreboardData()
-	CallRemoteEvent("scoreboard:update")
+	CallRemoteEvent("scoreboard:getdata")
 end
 
 function OnGetScoreboardData(servername, count, maxplayers, players)

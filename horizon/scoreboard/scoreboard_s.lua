@@ -12,7 +12,7 @@ You should have received a copy of the Onset Open Source License along with this
 see https://bluemountains.io/Onset_OpenSourceSoftware_License.txt
 ]]--
 
-AddRemoteEvent("scoreboard:update", function(player)
+AddRemoteEvent("scoreboard:getdata", function(player)
 	local PlayerTable = { }
 	
 	for _, v in ipairs(GetAllPlayers()) do
