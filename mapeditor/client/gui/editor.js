@@ -1,5 +1,4 @@
 
-
 $(document).ready(function() {
 
 	//BuildSelectableObjects();
@@ -11,7 +10,9 @@ $(document).ready(function() {
 	});
 
 	$("#objectExport").click(function() {
-		CallEvent("OnObjectExport");
+		let MapName = $('#mapName').val();
+
+		CallEvent("OnObjectExport", MapName);
 	});
 
 	$("#editorSpeed").change(function() {

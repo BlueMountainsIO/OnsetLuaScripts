@@ -13,6 +13,7 @@
 		"client/gui/editor.js",
 		"client/gui/jquery.js",
 		"client/gui/OpenSansRegular.woff2",
-		"client/gui/OpenSansBold.woff2"
+		"client/gui/OpenSansBold.woff2",
+		"client/ui_interact1.mp3"
 	]
 }

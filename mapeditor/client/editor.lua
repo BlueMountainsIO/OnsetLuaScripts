@@ -62,13 +62,13 @@ function OnKeyPress(key)
 
 	if key == "Z" then
 		if IsCtrlPressed() then
-			AddPlayerChat("Undo action")
+			--AddPlayerChat("Undo action")
 		end
 	end
 	
 	if key == "Y" then
 		if IsCtrlPressed() then
-			AddPlayerChat("Redo action")
+			--AddPlayerChat("Redo action")
 		end
 	end
 
@@ -130,6 +130,80 @@ function OnKeyPress(key)
 end
 AddEvent("OnKeyPress", OnKeyPress)
 
+AddEvent("OnRenderHUD", function()
+	if IsEditMode then
+		local x, y, z = GetPlayerLocation()
+		local ScreenX, ScreenY = GetScreenSize()
+	
+		SetDrawColor(RGB(255, 255, 255))
+		DrawText(2, ScreenY - 40, tostring("Player location: "..x..", "..y..", "..z))
+		DrawText(2, ScreenY - 55, tostring("Mouse selected location: "..SelectedLoc.x..", "..SelectedLoc.y..", "..SelectedLoc.z))
+
+		if SelectedLoc.isValid then
+			SetDrawColor(RGB(0, 255, 0))
+			DrawPoint3D(SelectedLoc.x, SelectedLoc.y, SelectedLoc.z + 5.0, 10.0)
+
+			DrawCircle3D(SelectedLoc.x, SelectedLoc.y, SelectedLoc.z + 5.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 10.0)
+
+			if SelectedObject == 0 then
+				SetDrawColor(RGB(0, 255, 0))
+				DrawLine3D(SelectedLoc.x, SelectedLoc.y, SelectedLoc.z + 5.0, SelectedLoc.x, SelectedLoc.y + 100.0, SelectedLoc.z + 5.0, 1.0)
+
+				SetDrawColor(RGB(255, 0, 0))
+				DrawLine3D(SelectedLoc.x, SelectedLoc.y, SelectedLoc.z + 5.0, SelectedLoc.x + 100.0, SelectedLoc.y, SelectedLoc.z + 5.0, 1.0)
+
+				SetDrawColor(RGB(0, 0, 255))
+				DrawLine3D(SelectedLoc.x, SelectedLoc.y, SelectedLoc.z + 5.0, SelectedLoc.x, SelectedLoc.y, SelectedLoc.z + 105.0, 1.0)
+			end
+		end
+
+		if SelectedObject ~= 0 and IsValidObject(SelectedObject) then
+			local bIsPartOfMapEditor = GetObjectPropertyValue(SelectedObject, "isPartOfMapEditor")
+			local MinX, MinY, MinZ, MaxX, MaxY, MaxZ = GetObjectBoundingBox(SelectedObject)
+			local ModelId = GetObjectModel(SelectedObject)
+			local ModelGroup = GetObjectModelGroup(ModelId)
+			local sX, sY, sZ = GetObjectSize(SelectedObject)
+			local oX, oY, oZ = GetObjectLocation(SelectedObject)
+			local rX, rY, rZ = GetObjectRotation(SelectedObject)
+			local scX, scY, scZ = GetObjectScale(SelectedObject)
+			local PlayerName = GetObjectPropertyValue(SelectedObject, "createdPlayerName")
+			local CreationTime = GetObjectPropertyValue(SelectedObject, "createdTimeFormat")
+
+			if not bIsPartOfMapEditor then
+				SetDrawColor(RGB(255, 165, 0))
+				DrawText(2, ScreenY - 190, "Object is not part of any map editor")
+			end
+
+			SetDrawColor(RGB(255, 255, 255))
+			DrawText(2, ScreenY - 70, tostring("ObjectBounding: "..MinX..", "..MinY..", "..MinZ..", "..MaxX..", "..MaxY..", "..MaxZ))
+			DrawText(2, ScreenY - 85, tostring("ObjectSize: "..sY..", "..sY..", "..sZ))
+			DrawText(2, ScreenY - 175, tostring("Created by: "..tostring(PlayerName)))
+			DrawText(2, ScreenY - 160, tostring("Created at: "..tostring(CreationTime)))
+			DrawText(2, ScreenY - 145, tostring("Object Id: "..SelectedObject..", Model Id: "..ModelId..", Group: "..ModelGroup))
+			DrawText(2, ScreenY - 130, tostring("ObjectLoc: "..oX..", "..oY..", "..oZ))
+			DrawText(2, ScreenY - 115, tostring("ObjectRot: Pitch "..rX..", Yaw "..rY..", Roll "..rZ))
+			DrawText(2, ScreenY - 100, tostring("ObjectScale: "..scX..", "..scY..", "..scZ))
+
+			DrawText(2, ScreenY - 25, "GizmoMode: "..GetGizmoModeStr())
+		end
+	else
+		local ScreenX, ScreenY = GetScreenSize()
+		SetDrawColor(RGB(255, 165, 0))
+		DrawText(2, ScreenY - 40, "Press the 'M' key to enable the map editor!")
+	end
+end)
+
+function GetGizmoModeStr()
+	if UserWantsEditMode == EDIT_LOCATION then
+		return "Translate"
+	elseif UserWantsEditMode == EDIT_ROTATION then
+		return "Rotate"
+	elseif UserWantsEditMode == EDIT_SCALE then
+		return "Scale"
+	end
+	return ""		
+end
+
 function ToggleEditor()
 	if not IsEditMode then
 		ShowMouseCursor(true)
@@ -159,23 +233,20 @@ function SelectEditorObject(object)
 
 		SelectedObject = 0
 	end
-	AddPlayerChat("SelectEditorObject: "..object)
+	--AddPlayerChat("SelectEditorObject: "..object)
 	if IsValidObject(object) then
-		AddPlayerChat("SelectEditorObject2: "..object)
+		--AddPlayerChat("SelectEditorObject2: "..object)
 		WasObjectEdited = false
 		SetObjectEditable(object, UserWantsEditMode)
 		SetObjectOutline(object, true)
 		SelectedObject = object
 
-		local x, y, z = GetObjectLocation(object)
-		local rx, ry, rz = GetObjectRotation(object)
-
-		ExecuteWebJS(EditorGui, "SetObjectInfo("..x..", "..y..", "..z..", "..rx..", "..ry..", "..rz..");")
+		UpdateObjectInfoUI(object)
 	end
 end
 
 function OnPlayerBeginEditObject(object)
-	AddPlayerChat("Now editing object")
+	--AddPlayerChat('<span style="italic" size="11">Now editing object</>')
 
 	if object == SelectedObject then
 		WasObjectEdited = true
@@ -184,16 +255,34 @@ end
 AddEvent("OnPlayerBeginEditObject", OnPlayerBeginEditObject)
 
 function OnPlayerEndEditObject(object)
-	AddPlayerChat("End editing.")
+	--AddPlayerChat('<span style="italic" size="11">End editing</>')
+
+	UpdateObjectInfoUI(object)
 end
 AddEvent("OnPlayerEndEditObject", OnPlayerEndEditObject)
+
+function UpdateObjectInfoUI(object)
+	if IsValidObject(object) then
+		local x, y, z = GetObjectLocation(object)
+		local rx, ry, rz = GetObjectRotation(object)
+
+		ExecuteWebJS(EditorGui, "SetObjectInfo("..x..", "..y..", "..z..", "..rx..", "..ry..", "..rz..");")
+	end
+end
 
 function UpdateObjectToServer(object)
 	if IsValidObject(object) then
 		local x, y, z = GetObjectLocation(object)
 		local rx, ry, rz = GetObjectRotation(object)
+		local sx, sy, sz = GetObjectScale(object)
 
-		CallRemoteEvent("Server_EditorUpdateObject", object, x, y, z, rx, ry, rz)
+		if sx == 1.0 and sy == 1.0 and sz == 1.0 then
+			sx = nil
+			sy = nil
+			sz = nil
+		end
+
+		CallRemoteEvent("Server_EditorUpdateObject", object, x, y, z, rx, ry, rz, sx, sy, sz)
 	end
 end
 
@@ -235,14 +324,16 @@ function OnObjectListSelect(ModelId)
 
 	if IsEditMode and SelectedLoc.isValid then
 		CallRemoteEvent("Server_EditorSpawnObject", ModelId, SelectedLoc.x, SelectedLoc.y, SelectedLoc.z)
+
+		CreateSound("client/ui_interact1.mp3")
 	end
 end
 AddEvent("OnObjectListSelect", OnObjectListSelect)
 
-function OnObjectExport()
+function OnObjectExport(MapName)
 	DisableEditor()
 
-	CallRemoteEvent("Server_EditorExport")
+	CallRemoteEvent("Server_EditorExport", MapName)
 end
 AddEvent("OnObjectExport", OnObjectExport)
 
