@@ -54,14 +54,15 @@ end
 
 function OnPlayerChatCommand(player, cmd, exists)	
 	if (GetTimeSeconds() - PlayerData[player].cmd_cooldown < 0.5) then
-		CancelChatCommand()
-		return AddPlayerChat(player, "Slow down with your commands")
+		AddPlayerChat(player, "Slow down with your commands")
+		return false
 	end
 
 	PlayerData[player].cmd_cooldown = GetTimeSeconds()
 
-	if (exists == 0) then
+	if not exists then
 		AddPlayerChat(player, "Command '/"..cmd.."' not found!")
 	end
+	return true
 end
 AddEvent("OnPlayerChatCommand", OnPlayerChatCommand)

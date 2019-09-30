@@ -14,11 +14,14 @@
 		"server/chat.lua",
 		"server/teleports.lua",
 		"scoreboard/scoreboard_s.lua",
-		"banking/atm_s.lua"
+		"banking/atm_s.lua",
+		"server/wtf_s.lua",
+		"server/trailer.lua"
 	],
 	"client_scripts": [
 		"client/world.lua",
 		"client/esp.lua",
+		"client/wtf.lua",
 		"scoreboard/scoreboard_c.lua",
 		"banking/atm_c.lua"
 	],
@@ -31,6 +34,7 @@
 		"client/files/AnimatedBanana.PNG",
 		"client/files/AnimatedPortal.PNG",
 		"client/files/AI.png",
+		"client/files/wtf.mp3",
 		"scoreboard/gui/scoreboard.html",
 		"scoreboard/gui/scoreboard.css",
 		"scoreboard/gui/scoreboard.js",

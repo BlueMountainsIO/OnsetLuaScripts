@@ -34,6 +34,8 @@ CreateText3D("/gas", 80, 125769.710938, 80245.554688, 1600.395508, 90.000000, 56
 --NPC
 CreateNPC(7, 128959.1015625, 79325.328125, 1579.2750244141, 84.066261291504)
 
+CreateObject(42, 127015.390625, 80362.5234375, 1566.9710693359)
+
 local WeaponPickups = {}
 local ParachutePickups = {}
 local HealthPickups = {}
@@ -67,7 +69,7 @@ local function OnPlayerPickupHit(player, pickup)
 	
 	for i, p in ipairs(WeaponPickups) do
 		if p == pickup then
-			AddPlayerWeapon(player, i + 1, 450, true, 1)
+			SetPlayerWeapon(player, i + 1, 450, true, 1)
 			return
 		end
 	end

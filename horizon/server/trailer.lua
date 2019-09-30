@@ -218,3 +218,17 @@ function cmd_tscene11(player)
 	SetPlayerAnimation(2, "ITSJUSTRIGHT", true)
 end
 AddCommand("tscene11", cmd_tscene11)
+
+local ts12 = 0
+function cmd_tscene12(player)
+	ts12 = CreateTimer(IncreaseHeadSize, 10, player)
+end
+AddCommand("tscene12", cmd_tscene12)
+
+function IncreaseHeadSize(player)
+	local size = GetPlayerHeadSize(player) + 0.1
+	SetPlayerHeadSize(player, size)
+	if (size > 3.0) then
+		DestroyTimer(ts12)
+	end
+end

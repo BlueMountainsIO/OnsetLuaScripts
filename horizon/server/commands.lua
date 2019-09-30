@@ -103,13 +103,13 @@ function cmd_w(player, weapon, slot, ammo)
 		return AddPlayerChat(player, "Usage: /w <weapon> <slot> <ammo>")
 	end
 
-	AddPlayerWeapon(player, weapon, ammo, true, slot)
+	SetPlayerWeapon(player, weapon, ammo, true, slot)
 end
 AddCommand("w", cmd_w)
 AddCommand("weapon", cmd_w)
 
 function cmd_mywep(player)
-	for i=1,10 do
+	for i=1,4 do
 		local weapon, ammo = GetPlayerWeapon(player, i)
 		AddPlayerChat(player, "Slot "..i..": "..weapon..", "..ammo)
 	end
@@ -123,7 +123,7 @@ function cmd_model(player, model)
 
 	model = tonumber(model)
 
-	if (model == nil or model < 1 or model > 20) then
+	if (model == nil or model < 1 or model > 26) then
 		return AddPlayerChat(player, "Invalid model id")
 	end
 
