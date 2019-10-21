@@ -45,6 +45,11 @@ function OnPlayerJoin(player)
 
 	local x, y, z, h = GetSpawnLocation()
 	SetPlayerSpawnLocation(player, x, y, z, h)
+
+	Delay(2000, function(player)
+		AddPlayerChat(player, '<span color="#8800eeff" style="bold" size="16">Welcome to Talos\' test server!</>')
+		AddPlayerChat(player, '<span color="#8800eeff" size="14">Popular teleports: /gas  /prison  /town</>')
+	end, player)
 end
 AddEvent("OnPlayerJoin", OnPlayerJoin)
 
@@ -189,6 +194,8 @@ function OnAccountLoaded(player)
 		AddPlayerChat(player, '<span color="#ffff00aa" style="bold italic" size="17">SERVER: Welcome back '..GetPlayerName(player)..', have fun!</>')
 
 		print("Account ID "..PlayerData[player].accountid.." loaded for "..GetPlayerIP(player))
+
+		SetPlayerCash(player, PlayerData[player].cash)
 
 		-- Update some values for this player now
 		local query = mariadb_prepare(sql, "UPDATE accounts SET count_login = count_login + 1, last_login_time = UNIX_TIMESTAMP(), game_version = ?, locale = '?', steam_name = '?' WHERE id = ?;",

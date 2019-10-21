@@ -93,6 +93,26 @@ function cmd_prison(player)
 end
 AddCommand("prison", cmd_prison)
 
+function cmd_bblock(player)
+	TeleportTo(player, -176209.000000, 76767.000000, 1633.000000, -90.0)
+end
+AddCommand("bblock", cmd_bblock)
+
+function cmd_cblock(player)
+	TeleportTo(player, -178464.000000, 75026.000000, 1615.000000, -90.0)
+end
+AddCommand("cblock", cmd_cblock)
+
+function cmd_dblock(player)
+	TeleportTo(player, -174202.000000, 80123.000000, 1652.000000, -90.0)
+end
+AddCommand("dblock", cmd_dblock)
+
+function cmd_town(player)
+	TeleportTo(player, -182821.000000, -41675.000000, 1160.000000, -90.0)
+end
+AddCommand("town", cmd_town)
+
 function cmd_guns(player)
 	TeleportTo(player, 207078.484375, 192689.109375, 1306.94921875, 175.41589355469)
 end
@@ -115,3 +135,8 @@ AddCommand("area51", cmd_area51)
 AddCommand("area", cmd_area51)
 AddCommand("air", cmd_area51)
 AddCommand("airport", cmd_area51)
+
+function cmd_diner(player)
+	TeleportTo(player, 212405.000000, 94489.000000, 1340.000000, 90.0)
+end
+AddCommand("diner", cmd_diner)

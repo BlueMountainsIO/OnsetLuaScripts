@@ -99,12 +99,12 @@ end
 
 function AddPlayerCash(player, cash)
 	PlayerData[player].cash = PlayerData[player].cash + cash
-	CallRemoteEvent(player, "ClientSetCash", PlayerData[player].cash)
+	CallRemoteEvent(player, "ClientSetCash", FormatMoney(PlayerData[player].cash))
 end
 
 function SetPlayerCash(player, cash)
 	PlayerData[player].cash = cash
-	CallRemoteEvent(player, "ClientSetCash", PlayerData[player].cash)
+	CallRemoteEvent(player, "ClientSetCash", FormatMoney(PlayerData[player].cash))
 end
 
 function GetPlayerCash(player)
@@ -133,15 +133,6 @@ end
 function PlayAudioFile(player, file)
 	CallRemoteEvent(player, "PlayAudioFile", file)
 end
-
---[[
-	This is called once the main client gui was initialized
-]]--
-function OnClientWebGuiLoaded(player)
-	SetPlayerCash(player, PlayerData[player].cash)
-end
-AddRemoteEvent("OnClientWebGuiLoaded", OnClientWebGuiLoaded)
-
 
 NiceColors = { 0xFF0000, 0xFF0066, 0xEF00FF, 0x8000FF, 0x1100FF, 0x004DFF, 0x00B3FF, 0x00FFD5, 0x00FF77, 0x00FF1A, 0x55FF00, 0xEFFF00, 0xFFBC00, 0xFFA200, 0x915425 }
 	

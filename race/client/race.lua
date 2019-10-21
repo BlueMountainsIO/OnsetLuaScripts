@@ -21,6 +21,7 @@ local CurrentPosition = 0
 local MaxRacers = 0
 local RaceTime = 0
 local RaceStartTime = 0
+local bIsInRace = false
 
 function PlayAudioFile2(file)
 	local FileName = "client/"..file
@@ -67,6 +68,8 @@ function OnRaceJoin(world_time)
 	SetIgnoreMoveInput(true)
 	SetIgnoreLookInput(true)
 
+	bIsInRace = true
+
 	if world_time and world_time ~= -1 then
 		SetTime(world_time)
 	end
@@ -96,6 +99,8 @@ function OnRaceExit()
 	-- Enable player controls
 	SetIgnoreMoveInput(false)
 	SetIgnoreLookInput(false)
+
+	bIsInRace = false
 
 	-- Destroy the race info text box
 	DestroyTextBox(TextRaceInfo)
@@ -147,3 +152,10 @@ function FormatTime(time)
 	local milliseconds = string.format("%03d", math.floor((time - (minutes * 60.0) - seconds) * 1000))
 	return minutes..':'..seconds..':'..milliseconds
 end
+
+function OnPlayerStartExitVehicle(vehicle)
+	if bIsInRace then
+		return false --Cancel exit
+	end
+end
+AddEvent("OnPlayerStartExitVehicle", OnPlayerStartExitVehicle)

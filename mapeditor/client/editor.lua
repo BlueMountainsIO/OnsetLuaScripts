@@ -12,6 +12,7 @@ You should have received a copy of the Onset Open Source License along with this
 see https://bluemountains.io/Onset_OpenSourceSoftware_License.txt
 ]]--
 
+local ShowMapEditor = true
 local EditorGui = 0
 local IsEditMode = false
 local SelectedLoc = { }
@@ -27,6 +28,7 @@ function OnPackageStart()
 	SetWebAlignment(EditorGui, 1.0, 0.0)
 	SetWebAnchors(EditorGui, 1.0, 0.0, 1.0, 1.0) -- anchor left top corner to left bottom corner
 	LoadWebFile(EditorGui, "http://asset/"..GetPackageName().."/client/gui/editor.html")
+	SetWebVisibility(EditorGui, WEB_VISIBLE)
 
 	SelectedLoc.x = 0.0
 	SelectedLoc.y = 0.0
@@ -34,8 +36,8 @@ function OnPackageStart()
 	SelectedLoc.distance = 0.0
 	SelectedLoc.isValid = false
 
-	ShowHealthHUD(false)
-	ShowWeaponHUD(false)
+	--ShowHealthHUD(false)
+	--ShowWeaponHUD(false)
 
 	SetObjectEditorSpeed(9.0)
 end
@@ -56,6 +58,20 @@ function OnWebLoadComplete(webid)
 	end
 end
 AddEvent("OnWebLoadComplete", OnWebLoadComplete)
+
+function ToggleMapEditorUI()
+	if GetWebVisibility(EditorGui) == WEB_HIDDEN then
+		AddPlayerChat("Showing map editor")
+		SetWebVisibility(EditorGui, WEB_VISIBLE)
+		ShowMapEditor = true
+	else
+		AddPlayerChat("Hiding map editor")
+		DisableEditor()
+		SetWebVisibility(EditorGui, WEB_HIDDEN)
+		ShowMapEditor = false
+	end
+end
+AddRemoteEvent("ToggleMapEditorUI", ToggleMapEditorUI)
 
 function OnKeyPress(key)
 	--AddPlayerChat(key)
@@ -81,7 +97,9 @@ function OnKeyPress(key)
 	end
 
 	if key == "M" then
-		ToggleEditor()
+		if ShowMapEditor then
+			ToggleEditor()
+		end
 	end
 
 	if key == "Left Mouse Button" then
@@ -187,9 +205,12 @@ AddEvent("OnRenderHUD", function()
 			DrawText(2, ScreenY - 25, "GizmoMode: "..GetGizmoModeStr())
 		end
 	else
-		local ScreenX, ScreenY = GetScreenSize()
-		SetDrawColor(RGB(255, 165, 0))
-		DrawText(2, ScreenY - 40, "Press the 'M' key to enable the map editor!")
+		if ShowMapEditor == true then
+			local ScreenX, ScreenY = GetScreenSize()
+			SetDrawColor(RGB(255, 165, 0))
+			DrawText(2, ScreenY - 40, "Press the 'M' key to enable the map editor!")
+			DrawText(2, ScreenY - 60, "Type /objects to hide the map editor window!")
+		end
 	end
 end)
 

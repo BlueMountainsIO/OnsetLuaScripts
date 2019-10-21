@@ -123,9 +123,9 @@ function cmd_model(player, model)
 
 	model = tonumber(model)
 
-	if (model == nil or model < 1 or model > 26) then
+	--[[if (model == nil or model < 1 or model > 26) then
 		return AddPlayerChat(player, "Invalid model id")
-	end
+	end]]--
 
 	SetPlayerModel(player, model)
 
@@ -142,9 +142,9 @@ function cmd_v(player, model)
 	model = tonumber(model)
 
 	-- Check for valid vehicle model.
-	if (model == nil or model < 1 or model > 23) then
+	--[[if (model == nil or model < 1 or model > 23) then
 		return AddPlayerChat(player, "Vehicle model "..model.." does not exist.")
-	end
+	end]]--
 
 	-- Destroy any old vehicle the player has spawned already.
 	if (PlayerData[player].vehicle ~= 0) then

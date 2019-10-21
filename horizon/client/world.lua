@@ -14,19 +14,21 @@ see https://bluemountains.io/Onset_OpenSourceSoftware_License.txt
 
 webgui = ImportPackage("webgui")
 
-local CashText = 0
 local SkydiveText = 0
+local CashText = 0
 local DrunkOn = false
 local LastSoundPlayed = 0
 local UIVisible = true
 
 function OnPackageStart()
-
+	CashText = CreateTextBox(-15, 180, 'CASH', "right")
+	SetTextBoxAnchors(CashText, 1.0, 0.0, 1.0, 0.0)
+	SetTextBoxAlignment(CashText, 1.0, 0.0)
 end
 AddEvent("OnPackageStart", OnPackageStart)
 
 function OnPackageStop()
-
+	DestroyTextBox(CashText)
 end
 AddEvent("OnPackageStop", OnPackageStop)
 
@@ -39,13 +41,20 @@ function ToggleUI()
 	webgui.SetVisibility(UIVisible)
 end
 
+local bFirstPerson = false
+
 function OnKeyPress(key)
 	if key == "Right Ctrl" then
 		ToggleUI()
 	end
 
+	if key == "P" then
+		bFirstPerson = not bFirstPerson
+		EnableFirstPersonCamera(bFirstPerson)
+	end
+
 	if key == "V" then
-		local distance = GetPlayerCameraViewDistance()
+		local distance = GetCameraViewDistance()
 
 		distance = distance * 1.1
 
@@ -58,7 +67,7 @@ function OnKeyPress(key)
 				distance = 250
 			end
 		end
-		SetPlayerCameraViewDistance(distance)
+		SetCameraViewDistance(distance)
 	end
 end
 AddEvent("OnKeyPress", OnKeyPress)
@@ -92,13 +101,11 @@ end
 AddEvent("OnSoundFinished", OnSoundFinished)
 
 function ClientSetCash(cash)
-	webgui.SetText(CashText, "<span style=\"color: green; font-weight: bold;\">$"..tostring(cash).."</span>")
+	SetTextBoxText(CashText, '<span size="22" color="#e8e8e8">'..cash..'</>')
 end
 AddRemoteEvent("ClientSetCash", ClientSetCash)
 
 function OnClientWebGuiLoaded()
-	CashText = webgui.CreateText("<span style=\"color: green;\">$0</span>", 10, 86, 2)
-
 	SkydiveText = webgui.CreateText("<span style=\"color: white;\">SKYDIVE<br></span>", 20, 86, 2)
 	webgui.SetTextVisible(SkydiveText, false)
 end

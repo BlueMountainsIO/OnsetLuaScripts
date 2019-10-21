@@ -24,15 +24,14 @@ function OnRenderHUD()
 		return
 	end
 
-	--local lX, lY, lZ = GetPlayerCameraLocation()
+	--local lX, lY, lZ = GetCameraLocation()
 	local x, y, z
-	local sX, sY
 	local ScreenX, ScreenY = GetScreenSize()
 	local t = { 1 }
 	--local bones = GetPlayerBoneNames()
 	for k, v in pairs(GetStreamedPlayers()) do
-		x, y, z = GetPlayerLocation(v)
-		sX, sY, sZ = WorldToScreen(x, y, z)
+		local x, y, z = GetPlayerLocation(v)
+		local sX, sY, sZ = WorldToScreen(x, y, z)
 		if sZ ~= 0.0 then
 			--local length = GetDistance3D(x, y, z, lX, lY, lZ)
 			

@@ -124,7 +124,7 @@ function CreateMapEditorObject(player, modelid, x, y, z, rx, ry, rz, sx, sy, sz)
 end
 
 function ExportMapAsLua(player, MapName)
-	local FileName = "map_"..MapName.."_"..os.date("%H:%M_%a_%b")..".lua"
+	local FileName = "map_"..MapName.."_"..os.date("%H_%M_%a_%b")..".lua"
 	
 	local ObjectCount = 0
 	local MapFile = io.open(FileName, "w")
@@ -164,7 +164,7 @@ function ExportMapAsIni(player, MapName)
 		return AddPlayerChat(player, "Can't export map as ini as ini-plugin is missing")
 	end
 
-	local FileName = "map_"..MapName.."_"..os.date("%H:%M_%a_%b")..".ini"
+	local FileName = "map_"..MapName.."_"..os.date("%H_%M_%a_%b")..".ini"
 
 	local ini = ini_open(FileName)
 
@@ -249,6 +249,25 @@ function file_exists(filename)
     end
     return false
 end
+
+function cmd_objects(player)
+	CallRemoteEvent(player, "ToggleMapEditorUI")
+end
+AddCommand("objects", cmd_objects)
+AddCommand("mapeditor", cmd_objects)
+
+function cmd_clearmap(player)
+	-- Cleanup player spawned objects
+	for k, v in pairs(EditorObjects[player]) do
+		DestroyObject(k)
+	end
+
+	EditorObjects[player] = nil
+	EditorObjects[player] = { }
+
+	AddPlayerChat(player, '<span color="#ff0000">Map cleared!</>')
+end
+AddCommand("clearmap", cmd_clearmap)
 
 function cmd_loadmap(player, FileName)
 	if (FileName == nil) then

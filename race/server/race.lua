@@ -94,6 +94,26 @@ function cmd_nextrace(player, next_raceid)
 end
 AddCommand("nextrace", cmd_nextrace)
 
+function cmd_rstartpoint(player, id)
+	local x, y, z = GetPlayerLocation(player)
+	local h = GetPlayerHeading(player)
+
+	print("start_"..id.."_x="..tostring(x))
+	print("start_"..id.."_y="..tostring(y))
+	print("start_"..id.."_z="..tostring(z))
+	print("start_"..id.."_h="..tostring(h))
+end
+AddCommand("rstartpoint", cmd_rstartpoint)
+
+function cmd_rcheckpoint(player, id)
+	local x, y, z = GetPlayerLocation(player)
+
+	print("checkpoint_"..id.."_x="..tostring(x))
+	print("checkpoint_"..id.."_y="..tostring(y))
+	print("checkpoint_"..id.."_z="..tostring(z))
+end
+AddCommand("rcheckpoint", cmd_rcheckpoint)
+
 function OnPackageStart()
 	-- Load initial race config
 	LoadRaceConfig()
@@ -102,10 +122,21 @@ function OnPackageStart()
 	NUM_RACES = LoadRacesFromConfig()
 	print("Loaded "..NUM_RACES.." races from config")
 
-	-- Reset once to get an initial state to work with
-	ResetRace()
+	if NUM_RACES > 0 then
+		-- Reset once to get an initial state to work with
+		ResetRace()
+	end
 end
 AddEvent("OnPackageStart", OnPackageStart)
+
+function OnPlayerJoin(player)
+	Delay(2500, function(player)
+		if RaceState ~= RACE_STATE_ACTIVE then
+			AddPlayerChat(player, 'Have fun in <span color="#fcc900" size="17">/race</>')
+		end
+	end, player)
+end
+AddEvent("OnPlayerJoin", OnPlayerJoin)
 
 function OnPlayerDeath(player, instigator)
 	-- If a player happens to die remove them from the race
@@ -176,7 +207,13 @@ function SelectNextRace()
 		CurrentRaceId = NextRaceIdOverride
 		NextRaceIdOverride = 0
 	else
-		CurrentRaceId = Random(1, NUM_RACES)
+		local bFound = false
+		while not bFound do
+			CurrentRaceId = Random(1, NUM_RACES)
+			if RaceInfo[CurrentRaceId].enabled == true then
+				bFound = true
+			end
+		end
 	end
 end
 
@@ -184,6 +221,10 @@ function SetNextRaceOverride(next_raceid)
 	next_raceid = math.tointeger(next_raceid)
 
 	if not IsValidRaceId(next_raceid) then
+		return false
+	end
+
+	if RaceInfo[next_raceid].enabled == false then
 		return false
 	end
 
@@ -241,6 +282,7 @@ function LoadRacesFromConfig()
 		local ini = ini_open(race_file)
 
 		RaceInfo[i] =  {}
+		RaceInfo[i].enabled = ini_read(ini, "config", "enabled")
 		RaceInfo[i].name = ini_read(ini, "config", "name")
 		RaceInfo[i].vehicle_model = math.tointeger(ini_read(ini, "config", "vehicle_model"))
 		RaceInfo[i].time = math.tointeger(ini_read(ini, "config", "time_seconds"))
@@ -249,6 +291,12 @@ function LoadRacesFromConfig()
 		RaceInfo[i].world_time = tonumber(ini_read(ini, "config", "world_time"))
 		RaceInfo[i].license_plate = ini_read(ini, "config", "license_plate")
 		RaceInfo[i].pickup_object_model = math.tointeger(ini_read(ini, "config", "pickup_object_model"))
+
+		if RaceInfo[i].enabled == nil or RaceInfo[i].enabled == "true" then
+			RaceInfo[i].enabled = true
+		else
+			RaceInfo[i].enabled = false
+		end
 
 		if RaceInfo[i].name == nil then
 			RaceInfo[i].name = "Unamed race"
@@ -500,8 +548,16 @@ function CheckIfFinished(player)
 	end
 end
 
-function OnVehiclePickupHit(vehicle, pickup)
+function OnPlayerPickupHit(player, pickup)
+	if RaceState ~= RACE_STATE_ACTIVE then
+		return
+	end
+
 	if GetPickupDimension(pickup) ~= RaceInfo[CurrentRaceId].dimension then
+		return
+	end
+
+	if GetPlayerVehicle(player) == 0 then
 		return
 	end
 	
@@ -519,7 +575,7 @@ function OnVehiclePickupHit(vehicle, pickup)
 		end
 	end
 end
-AddEvent("OnVehiclePickupHit", OnVehiclePickupHit)
+AddEvent("OnPlayerPickupHit", OnPlayerPickupHit)
 
 function OnPlayerLeaveVehicle(player, vehicle, seat)
 	if Racers[player] == nil then

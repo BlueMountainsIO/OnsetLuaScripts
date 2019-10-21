@@ -23,8 +23,8 @@ AddEvent("OnRenderHUD", function()
 	SetTextDrawScale(1.0, 1.0)
 
 	local range = 7000.0
-	local camX, camY, camZ = GetPlayerCameraLocation()
-	local camForwardX, camForwardY, camForwardZ = GetPlayerCameraForwardVector()
+	local camX, camY, camZ = GetCameraLocation()
+	local camForwardX, camForwardY, camForwardZ = GetCameraForwardVector()
 	local muzzleX, muzzleY, muzzleZ = GetPlayerWeaponMuzzleLocation()
 
 	DrawPoint3D(muzzleX, muzzleY, muzzleZ, 2.0, true)
