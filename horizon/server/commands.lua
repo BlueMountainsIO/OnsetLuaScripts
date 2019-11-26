@@ -127,9 +127,9 @@ function cmd_model(player, model)
 		return AddPlayerChat(player, "Invalid model id")
 	end]]--
 
-	SetPlayerModel(player, model)
+	SetPlayerPropertyValue(player, "_modelPreset", model)
 
-	AddPlayerChat(player, "Model set (ID: "..GetPlayerModel(player)..")")
+	AddPlayerChat(player, "Model set (ID: "..model..")")
 end
 AddCommand("model", cmd_model)
 

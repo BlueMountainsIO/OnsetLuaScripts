@@ -72,6 +72,45 @@ function OnKeyPress(key)
 end
 AddEvent("OnKeyPress", OnKeyPress)
 
+function OnObjectStreamIn(object)
+	local _texture = GetObjectPropertyValue(object, "_texture")
+
+	if _texture ~= nil then
+		local _textureFile = GetObjectPropertyValue(object, "_textureFile")
+
+		if _texture == "animated" then
+			local _textureRowColumns = GetObjectPropertyValue(object, "_textureRowColumns")
+			SetObjectAnimatedTexture(object, _textureFile, _textureRowColumns[1], _textureRowColumns[2])
+		elseif _texture == "static" then
+			SetObjectTexture(object, _textureFile)
+		end
+	end
+end
+AddEvent("OnObjectStreamIn", OnObjectStreamIn)
+
+function OnNPCStreamIn(npc)
+	local _modelPreset = GetNPCPropertyValue(npc, "_modelPreset")
+	if _modelPreset ~= nil then
+		SetNPCClothingPreset(npc, _modelPreset)
+	end
+end
+AddEvent("OnNPCStreamIn", OnNPCStreamIn)
+
+function OnPlayerStreamIn(player)
+	local _modelPreset = GetPlayerPropertyValue(npc, "_modelPreset")
+	if _modelPreset ~= nil then
+		SetPlayerClothingPreset(player, _modelPreset)
+	end
+end
+AddEvent("OnPlayerStreamIn", OnPlayerStreamIn)
+
+function OnPlayerNetworkUpdatePropertyValue(player, PropertyName, PropertyValue)
+	if PropertyName == "_modelPreset" then
+		SetPlayerClothingPreset(player, PropertyValue)
+	end
+end
+AddEvent("OnPlayerNetworkUpdatePropertyValue", OnPlayerNetworkUpdatePropertyValue)
+
 function ClientSetTime(time)
 	SetTime(time)
 end

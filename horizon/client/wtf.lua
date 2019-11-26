@@ -11,7 +11,7 @@ AddEvent("OnRenderHUD", function()
 		return
 	end
 
-	local weapon = GetPlayerWeapon()
+	local weapon = GetPlayerWeapon(GetPlayerEquippedWeaponSlot())
 	if GetWeaponType(weapon) == 0 then
 		return -- skip if fist
 	end

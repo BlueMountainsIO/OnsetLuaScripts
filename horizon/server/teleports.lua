@@ -35,7 +35,7 @@ function TeleportTo(player, x, y, z, h)
 		end
 	end
 
-	ResetPlayerCamera(player)
+	--ResetPlayerCamera(player)
 end
 
 function cmd_beach(player)

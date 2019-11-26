@@ -32,7 +32,8 @@ CreateVehicle(16, 125596.28125, 74573.09375, 1668.2861328125, 134.67620849609)
 CreateText3D("/gas", 80, 125769.710938, 80245.554688, 1600.395508, 90.000000, 56.309914, 146.309296)
 
 --NPC
-CreateNPC(7, 128959.1015625, 79325.328125, 1579.2750244141, 84.066261291504)
+local npc = CreateNPC(128959.1015625, 79325.328125, 1579.2750244141, 84.066261291504)
+SetNPCPropertyValue(npc, "_modelPreset", 23)
 
 CreateObject(42, 127015.390625, 80362.5234375, 1566.9710693359)
 
@@ -56,10 +57,13 @@ local function OnPackageStart()
 	ConePickups[1] = CreatePickup(2, 191678.546875, 195024.28125, 1310.6500244141, -98.309234619141)
 
 	local TextureObject = CreateObject(1, 128651.5234375, 79332.890625, 1579.2681884766)
-	SetObjectAnimatedTexture(TextureObject, GetPackageName()..":client/files/AnimatedBanana.PNG", 2, 4)
+	SetObjectPropertyValue(TextureObject, "_texture", "animated")
+	SetObjectPropertyValue(TextureObject, "_textureFile", GetPackageName().."/client/files/AnimatedBanana.PNG")
+	SetObjectPropertyValue(TextureObject, "_textureRowColumns", { 2, 4 })
 
 	TextureObject = CreateObject(3, 126489.7890625, 80245.554688, 1477.395508)
-	SetObjectTexture(TextureObject, GetPackageName()..":client/files/AI.png")
+	SetObjectPropertyValue(TextureObject, "_texture", "static")
+	SetObjectPropertyValue(TextureObject, "_textureFile", GetPackageName().."/client/files/AI.png")
 	SetObjectScale(TextureObject, 0.5, 0.5, 1.0)
 end
 AddEvent("OnPackageStart", OnPackageStart)
