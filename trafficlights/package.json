@@ -1,0 +1,12 @@
+{
+	"author": "Blue Mountains",
+	"version": "1.0",
+	"server_scripts": [
+		"trafficlights_s.lua"
+	],
+	"client_scripts": [
+		"trafficlights_c.lua"
+	],
+	"files": [
+	]
+}
