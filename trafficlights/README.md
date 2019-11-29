@@ -1,6 +1,6 @@
-== Traffic Lights ==
+## Traffic Lights
 
-=== Example Usage ===
+#### Example Usage 
 ```Lua
 tl = ImportPackage("trafficlights")
 
@@ -9,5 +9,7 @@ function OnPackageStart()
 end
 AddEvent("OnPackageStart", OnPackageStart)
 ```
+
+Shows debug label if game was started with -dev
 
 ![](https://dev.playonset.com/images/5/5c/trafficlight.gif)
