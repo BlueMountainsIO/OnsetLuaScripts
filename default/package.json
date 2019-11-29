@@ -1,0 +1,12 @@
+{
+	"author": "Blue Mountains",
+	"version": "1.0",
+	"server_scripts": [
+		"WorldDoors.lua"
+	],
+	"client_scripts": [
+		"Weapons.lua"
+	],
+	"files": [
+	]
+}
