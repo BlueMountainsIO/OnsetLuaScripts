@@ -140,3 +140,28 @@ function cmd_diner(player)
 	TeleportTo(player, 212405.000000, 94489.000000, 1340.000000, 90.0)
 end
 AddCommand("diner", cmd_diner)
+
+function cmd_vault1(player)
+	TeleportTo(player, 189784.000000, 201549.000000, 835.000000, 90.0)
+end
+AddCommand("vault1", cmd_vault1)
+
+function cmd_cinema(player)
+	TeleportTo(player, 173747.000000, 198165.000000, 2532.0, 90.0)
+end
+AddCommand("cinema", cmd_cinema)
+
+function cmd_pd(player)
+	TeleportTo(player, 171553.000000, 195234.000000, 572.0, 90.0)
+end
+AddCommand("pd", cmd_pd)
+
+function cmd_hosp1(player)
+	TeleportTo(player, 215242.000000, 158470.000000, 2962.000000, 90.0)
+end
+AddCommand("hosp1", cmd_hosp1)
+
+function cmd_hosp2(player)
+	TeleportTo(player, 212372.000000, 153763.000000, 2793.000000, 90.0)
+end
+AddCommand("hosp2", cmd_hosp2)
