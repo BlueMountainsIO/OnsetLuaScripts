@@ -581,3 +581,27 @@ function cmd_objtest(player)
 	end
 end
 AddCommand("objtest", cmd_objtest)
+
+function cmd_findid(player, ...)
+	local args = {...}
+	if #args == 0 then
+		AddPlayerChat(player, "Your player id is "..player)
+		return
+	end
+	local name = args[1]
+	for i=2,#args do
+		name = name.." "..args[i]
+	end
+	local players = GetAllPlayers()
+	local matching = 0
+	for i=1,#players do
+		if GetPlayerName(players[i]):match(name) then
+			AddPlayerChat(player, "The player id of \""..GetPlayerName(players[i]).."\" is "..players[i])
+			matching=matching+1
+		end
+	end
+	if matching == 0 then
+		AddPlayerChat(player, "No player found matching that name!")
+	end
+end
+AddCommand("findid", cmd_findid)
