@@ -51,6 +51,12 @@ function OnKeyPress(key)
 	if key == "P" then
 		bFirstPerson = not bFirstPerson
 		EnableFirstPersonCamera(bFirstPerson)
+
+		if bFirstPerson then
+			SetNearClipPlane(12) -- cull geometry 12cm in front of camera
+		else
+			SetNearClipPlane(0)
+		end
 	end
 
 	if key == "V" then
@@ -97,7 +103,7 @@ end
 AddEvent("OnNPCStreamIn", OnNPCStreamIn)
 
 function OnPlayerStreamIn(player)
-	local _modelPreset = GetPlayerPropertyValue(npc, "_modelPreset")
+	local _modelPreset = GetPlayerPropertyValue(player, "_modelPreset")
 	if _modelPreset ~= nil then
 		SetPlayerClothingPreset(player, _modelPreset)
 	end
