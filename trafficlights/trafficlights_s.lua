@@ -50,7 +50,7 @@ AddFunctionExport("CreateTrafficLight", function (model, x, y, z, rx, ry, rz)
 	-- Create a dummy object that will help us streaming the traffic light
 	local object = CreateObject(1, x, y, z, rx, ry, rz, 0.01, 0.01, 0.01)
 	SetObjectPropertyValue(object, "_trafficLight", model)
-	--SetObjectStreamDistance(tl, 4000.0)
+	--SetObjectStreamDistance(object, 1000.0)
 
 	TrafficLights[object] = { }
 	TrafficLights[object].state = LIGHT_OFF
