@@ -4,7 +4,7 @@ Serverside streamed 3D sounds.
 
 This package allows you to add an unlimited amount of sounds in the game world.
 The client can only play 8 sounds at the same time via CreateSound.
-We get around this limit by exploting the server side streaming algorithm via CreateObject.
+We get around this limit by taking advantage of the server side streaming algorithm via CreateObject.
 
 #### Example Usage 
 ```Lua
