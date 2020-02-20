@@ -12,7 +12,7 @@ You should have received a copy of the Onset Open Source License along with this
 see https://bluemountains.io/Onset_OpenSourceSoftware_License.txt
 ]]--
 
-pprint = require('packages/horizon/server/pprint')
+pprint = require('packages/horizon/server/vendor/pprint')
 
 -- Define race states
 local RACE_STATE_INACTIVE = 0

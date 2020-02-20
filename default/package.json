@@ -2,10 +2,10 @@
 	"author": "Blue Mountains",
 	"version": "1.0",
 	"server_scripts": [
-		"jump.lua"
+		"WorldDoors.lua"
 	],
 	"client_scripts": [
-		"key_trigger.lua"
+		"Weapons.lua"
 	],
 	"files": [
 	]

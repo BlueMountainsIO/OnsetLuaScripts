@@ -143,12 +143,12 @@ function ExportMapAsLua(player, MapName)
 		if sx == 1.0 and sy == 1.0 and sz == 1.0 then
 			isScaleSet = false
 		end
-
+		
 		if not isRotSet and not isScaleSet then
 			MapFile:write("CreateObject("..model..", "..x..", "..y..", "..z..")", "\n")
 		elseif isRotSet and not isScaleSet then
 			MapFile:write("CreateObject("..model..", "..x..", "..y..", "..z..", "..rx..", "..ry..", "..rz..")", "\n")
-		elseif isRotSet and isScaleSet then
+		else
 			MapFile:write("CreateObject("..model..", "..x..", "..y..", "..z..", "..rx..", "..ry..", "..rz..", "..sx..", "..sy..", "..sz..")", "\n")
 		end
 

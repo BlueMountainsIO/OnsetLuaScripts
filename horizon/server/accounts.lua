@@ -144,14 +144,20 @@ end
 
 
 function OnAccountCreated(player)
-	PlayerData[player].accountid = mariadb_get_insert_id()
+	local new_id = mariadb_get_insert_id()
 
-	SetPlayerLoggedIn(player)
+	if new_id == false then
+		KickPlayer(player, "An error occured while creating your account 😨")
+	else
+		PlayerData[player].accountid = mariadb_get_insert_id()
 
-	print("Account ID "..PlayerData[player].accountid.." created for "..player)
+		SetPlayerLoggedIn(player)
 
-	AddPlayerChat(player, '<span color="#ffff00aa" style="bold italic" size="15">SERVER: Welcome to the community, '..GetPlayerName(player)..', have fun and play fair!</>')
-	AddPlayerChatAll('<span color="00ee00ff">We now have'..PlayerData[player].accountid..' accounts registered</>')
+		print("Account ID "..PlayerData[player].accountid.." created for "..player)
+
+		AddPlayerChat(player, '<span color="#ffff00aa" style="bold italic" size="15">SERVER: Welcome to the community, '..GetPlayerName(player)..', have fun and play fair!</>')
+		AddPlayerChatAll('<span color="00ee00ff">We now have'..PlayerData[player].accountid..' accounts registered</>')
+	end
 end
 
 

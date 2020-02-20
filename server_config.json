@@ -14,7 +14,9 @@
 		"ini-plugin"
 	],
 	"packages": [
+		"default",
 		"webgui",
+		"trafficlights",
 		"horizon",
 		"vehiclejump",
 		"debug",
