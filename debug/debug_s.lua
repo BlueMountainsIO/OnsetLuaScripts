@@ -21,8 +21,7 @@ function UpdateServerData(player)
 	PoolsTable[4] = GetNPCCount()
 	PoolsTable[5] = GetPickupCount()
 	PoolsTable[6] = GetText3DCount()
-	PoolsTable[7] = GetLightCount()
-	PoolsTable[8] = GetTimerCount()
+	PoolsTable[7] = GetTimerCount()
 	
 	local NetStats = GetNetworkStats()
 	
