@@ -89,7 +89,6 @@ function UpdateClientPools()
 	data = data .. "NPC: " .. tostring(GetNPCCount()) .. "<br>"
 	data = data .. "Pickups: " .. tostring(GetPickupCount()) .. "<br>"
 	data = data .. "Text3D: " .. tostring(GetText3DCount()) .. "<br>"
-	data = data .. "Lights: " .. tostring(GetLightCount()) .. "<br>"
 	data = data .. "Timer: " .. tostring(GetTimerCount()) .. "<br>"
 	data = data .. "WebUI: " .. tostring(GetWebUICount()) .. "<br>"
 	data = data .. "Sounds: " .. tostring(GetSoundCount()) .. "<br>"
@@ -105,8 +104,7 @@ function OnGetUpdateServerPools(PoolsTable, NetStats, AvgPing)
 	data = data .. "NPC: " .. PoolsTable[4] .. "<br>"
 	data = data .. "Pickups: " .. PoolsTable[5] .. "<br>"
 	data = data .. "Text3D: " .. PoolsTable[6] .. "<br>"
-	data = data .. "Lights: " .. PoolsTable[7] .. "<br>"
-	data = data .. "Timer: " .. PoolsTable[8] .. "<br>"
+	data = data .. "Timer: " .. PoolsTable[7] .. "<br>"
 
 	ExecuteWebJS(webui, "SetServerPools('"..data.."');")
 	
