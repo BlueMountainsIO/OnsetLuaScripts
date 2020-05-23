@@ -22,10 +22,41 @@
 		"debug",
 		"race"
 	],
-	"stream_distance": 12000.0,
-	"stream_update_rate": 0.05,
 	"voice": true,
 	"voice_sample_rate": 24000,
-	"voice_distance": 4000.0,
-	"voice_spatialization": true
+	"voice_spatialization": true,
+	"pools": {
+		"player": {
+			"distance": 12000.0,
+			"update_rate": 0.05
+		},
+		"voice": {
+			"distance": 5000.0,
+			"update_rate": 0.8
+		},
+		"vehicle": {
+			"distance": 12000.0,
+			"update_rate": 0.1
+		},
+		"object": {
+			"distance": 12000.0,
+			"update_rate": 0.1
+		},
+		"npc": {
+			"distance": 12000.0,
+			"update_rate": 0.1
+		},
+		"pickup": {
+			"distance": 12000.0,
+			"update_rate": 0.1
+		},
+		"door": {
+			"distance": 12000.0,
+			"update_rate": 0.1
+		},
+		"text3d": {
+			"distance": 12000.0,
+			"update_rate": 0.1
+		}
+	}
 }
