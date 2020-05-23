@@ -175,6 +175,9 @@ function cmd_v(player, model)
 	SetVehicleLicensePlate(vehicle, "O N S E T")
 	AttachVehicleNitro(vehicle, true)
 
+	-- Enable backfire effects
+	EnableVehicleBackfire(vehicle, true)
+
 	-- Never respawn player vehicles if it is left unoccupied
 	SetVehicleRespawnParams(vehicle, false)
 
