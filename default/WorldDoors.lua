@@ -100,6 +100,9 @@ AddEvent("OnPackageStart", function()
 	CreateDoor(76, 148201.000000, 184639.000000, 1017.000000, 180.0, true)
 	CreateDoor(76, 148312.000000, 182659.000000, 1348.000000, -90.0, true)
 	
+	-- City White Building
+	CreateDoor(17, 146383.000000, 185225.000000, 1679.000000, 0.0, true)
+	
 	-- City Gas Station
 	CreateDoor(32, 170431.000000, 204098.000000, 1313.000000, 0.0, true)
 	CreateDoor(36, 172326.000000, 202825.000000, 1316.000000, 0.0, true)
