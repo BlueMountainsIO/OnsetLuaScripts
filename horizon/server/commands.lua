@@ -608,3 +608,32 @@ function cmd_findid(player, ...)
 	end
 end
 AddCommand("findid", cmd_findid)
+
+function cmd_radio(player)
+	local v = GetPlayerVehicle(player)
+	if v == false then
+		AddPlayerChat(player, "You must be in a vehicle")
+		return
+	end
+
+	sr.AttachSound3D(ATTACH_VEHICLE, v, "http://us4.internet-radio.com:8258/listen.pls&t=.pls")
+	AddPlayerChat(player, "Radio playing, /dradio to stop")
+end
+AddCommand("radio", cmd_radio)
+
+function cmd_dradio(player)
+	local v = GetPlayerVehicle(player)
+	if v == false then
+		AddPlayerChat(player, "You must be in a vehicle")
+		return
+	end
+
+	if not sr.IsSoundAttached(ATTACH_VEHICLE, v) then
+		AddPlayerChat(player, "No radio playing")		
+		return
+	end
+
+	sr.DetachSound3D(ATTACH_VEHICLE, v)
+	AddPlayerChat(player, "Radio stopped")
+end
+AddCommand("dradio", cmd_dradio)

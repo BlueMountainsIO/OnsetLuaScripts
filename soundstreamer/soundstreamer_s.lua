@@ -46,6 +46,81 @@ AddFunctionExport("CreateSound3D", function (sound_file, x, y, z, radius, volume
 	return object
 end)
 
+AddFunctionExport("AttachSound3D", function(attach, id, sound_file, radius, volume, pitch)
+
+	if attach == nil or id == nil or sound_file == nil then
+		return false
+	end
+
+	radius = radius or 2500.0
+	volume = volume or 1.0
+	pitch = pitch or 1.0
+
+	if attach == ATTACH_VEHICLE then
+		if not IsValidVehicle(id) then
+			return false
+		end
+
+		if GetVehiclePropertyValue(id, "_soundStream") ~= nil then
+			-- Sound already attached
+			return false
+		end
+		
+		local _soundStream = { }
+		_soundStream.file = sound_file
+		_soundStream.radius = radius
+		_soundStream.volume = volume
+		_soundStream.pitch = pitch
+
+		SetVehiclePropertyValue(id, "_soundStream", _soundStream)
+		return true
+	end
+
+	return false
+end)
+
+AddFunctionExport("DetachSound3D", function(attach, id)
+
+	if attach == nil or id == nil then
+		return false
+	end
+
+	if attach == ATTACH_VEHICLE then
+		if not IsValidVehicle(id) then
+			return false
+		end
+
+		if GetVehiclePropertyValue(id, "_soundStream") == nil then
+			-- No sound attached
+			return false
+		end
+
+		SetVehiclePropertyValue(id, "_soundStream", false)
+		SetVehiclePropertyValue(id, "_soundStream", nil)		
+		return true
+	end
+
+	return false
+end)
+
+AddFunctionExport("IsSoundAttached", function(attach, id)
+	if attach == nil or id == nil then
+		return false
+	end
+
+	if attach == ATTACH_VEHICLE then
+		if not IsValidVehicle(id) then
+			return false
+		end
+
+		if GetVehiclePropertyValue(id, "_soundStream") ~= nil then
+			return true
+		end
+	end
+
+	return false
+end)
+
 AddFunctionExport("DestroySound3D", function (object)
 	if StreamedSounds[object] == nil then
 		return false
