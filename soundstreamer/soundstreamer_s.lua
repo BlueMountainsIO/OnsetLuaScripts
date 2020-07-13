@@ -21,9 +21,14 @@ AddEvent("OnPackageStop", function()
 	end
 
 	StreamedSounds = nil
+
 end)
 
 AddFunctionExport("CreateSound3D", function (sound_file, x, y, z, radius, volume, pitch)
+
+	if sound_file == nil or x == nil or y == nil or z == nil then
+		return false
+	end
 
 	radius = radius or 2500.0
 	volume = volume or 1.0
@@ -31,22 +36,28 @@ AddFunctionExport("CreateSound3D", function (sound_file, x, y, z, radius, volume
 
 	-- Create a dummy object that will help us streaming the sound
 	local object = CreateObject(1, x, y, z)
-	SetObjectPropertyValue(object, "_soundStream", sound_file)
-	SetObjectPropertyValue(object, "_soundStreamRadius", radius)
-	SetObjectPropertyValue(object, "_soundStreamVolume", volume)
-	SetObjectPropertyValue(object, "_soundStreamPitch", pitch)
+
+	if object == false then
+		return false
+	end
+
 	SetObjectStreamDistance(object, radius)
 
-	StreamedSounds[object] = { }
-	StreamedSounds[object].sound_file = sound_file
-	StreamedSounds[object].radius = radius
-	StreamedSounds[object].volume = volume
-	StreamedSounds[object].pitch = pitch
+	local _soundStream = { }
+	_soundStream.is_attached = false
+	_soundStream.file = sound_file
+	_soundStream.radius = radius
+	_soundStream.volume = volume
+	_soundStream.pitch = pitch
+
+	SetObjectPropertyValue(object, "_soundStream", _soundStream)
+
+	StreamedSounds[object] = _soundStream
 
 	return object
 end)
 
-AddFunctionExport("AttachSound3D", function(attach, id, sound_file, radius, volume, pitch)
+AddFunctionExport("CreateAttachedSound3D", function(attach, id, sound_file, radius, volume, pitch)
 
 	if attach == nil or id == nil or sound_file == nil then
 		return false
@@ -56,72 +67,56 @@ AddFunctionExport("AttachSound3D", function(attach, id, sound_file, radius, volu
 	volume = volume or 1.0
 	pitch = pitch or 1.0
 
-	if attach == ATTACH_VEHICLE then
-		if not IsValidVehicle(id) then
-			return false
-		end
-
-		if GetVehiclePropertyValue(id, "_soundStream") ~= nil then
-			-- Sound already attached
-			return false
-		end
-		
-		local _soundStream = { }
-		_soundStream.file = sound_file
-		_soundStream.radius = radius
-		_soundStream.volume = volume
-		_soundStream.pitch = pitch
-
-		SetVehiclePropertyValue(id, "_soundStream", _soundStream)
-		return true
+	local object = CreateObject(1, 0.0, 0.0, 0.0)
+	
+	if object == false then
+		return false
 	end
 
-	return false
+	local _soundStream = { }
+	_soundStream.is_attached = true
+	_soundStream.attach = attach
+	_soundStream.id = id
+	_soundStream.file = sound_file
+	_soundStream.radius = radius
+	_soundStream.volume = volume
+	_soundStream.pitch = pitch
+
+	SetObjectPropertyValue(object, "_soundStream", _soundStream)
+
+	if SetObjectAttached(object, attach, id, 0.0, 0.0, 0.0) == false then
+		DestroyObject(object)
+		return false
+	end
+
+	StreamedSounds[object] = _soundStream
+
+	return object
 end)
 
-AddFunctionExport("DetachSound3D", function(attach, id)
-
+AddFunctionExport("GetAttached3DSounds", function(attach, id)
+	
 	if attach == nil or id == nil then
 		return false
 	end
 
-	if attach == ATTACH_VEHICLE then
-		if not IsValidVehicle(id) then
-			return false
-		end
+	local sounds = { }
 
-		if GetVehiclePropertyValue(id, "_soundStream") == nil then
-			-- No sound attached
-			return false
+	for k, v in pairs(StreamedSounds) do
+		if v.is_attached == true then
+			if v.attach == attach and v.id == id then
+				table.insert(sounds, k)
+			end
 		end
-
-		SetVehiclePropertyValue(id, "_soundStream", false)
-		SetVehiclePropertyValue(id, "_soundStream", nil)		
-		return true
 	end
 
-	return false
+	return sounds
 end)
 
-AddFunctionExport("IsSoundAttached", function(attach, id)
-	if attach == nil or id == nil then
+AddFunctionExport("DestroySound3D", function(object)
+	if object == nil then
 		return false
 	end
-
-	if attach == ATTACH_VEHICLE then
-		if not IsValidVehicle(id) then
-			return false
-		end
-
-		if GetVehiclePropertyValue(id, "_soundStream") ~= nil then
-			return true
-		end
-	end
-
-	return false
-end)
-
-AddFunctionExport("DestroySound3D", function (object)
 	if StreamedSounds[object] == nil then
 		return false
 	end
@@ -129,48 +124,77 @@ AddFunctionExport("DestroySound3D", function (object)
 	return DestroyObject(object)
 end)
 
-AddFunctionExport("IsValidSound3D", function (object)
+AddFunctionExport("IsValidSound3D", function(object)
 	return StreamedSounds[object] ~= nil
 end)
 
-AddFunctionExport("SetSound3DVolume", function (object, volume)
+AddFunctionExport("IsAttachedSound3D", function(object)
+	if StreamedSounds[object] == nil then
+		return false
+	end
+	return StreamedSounds[object].is_attached
+end)
+
+AddFunctionExport("SetSound3DVolume", function(object, volume)
+	if object == nil then
+		return false
+	end
+
 	volume = volume or 1.0
 
 	if StreamedSounds[object] == nil then
 		return false
 	end
-	SetObjectPropertyValue(object, "_soundStreamVolume", volume)
+
+	StreamedSounds[object].volume = volume
+	SetObjectPropertyValue(object, "_soundStream", StreamedSounds[object])
 	return true
 end)
 
-AddFunctionExport("SetSound3DPitch", function (object, pitch)
+AddFunctionExport("SetSound3DPitch", function(object, pitch)
+	if object == nil then
+		return false
+	end
+
 	pitch = pitch or 1.0
 
 	if StreamedSounds[object] == nil then
 		return false
 	end
-	SetObjectPropertyValue(object, "_soundStreamPitch", pitch)
+	StreamedSounds[object].pitch = pitch
+	SetObjectPropertyValue(object, "_soundStream", StreamedSounds[object])
 	return true
 end)
 
-AddFunctionExport("SetSound3DDimension", function (object, dimension)
+AddFunctionExport("SetSound3DDimension", function(object, dimension)
+	if object == nil or dimension == nil then
+		return false
+	end
 	if StreamedSounds[object] == nil then
 		return false
 	end
-	SetObjectDimension(object, dimension)
-	return true
+	return SetObjectDimension(object, dimension)
 end)
 
-AddFunctionExport("GetSound3DDimension", function (object)
+AddFunctionExport("GetSound3DDimension", function(object)
+	if object == nil then
+		return false
+	end
 	if StreamedSounds[object] == nil then
 		return false
 	end
 	return GetObjectDimension(object)
 end)
 
-AddFunctionExport("SetSound3DLocation", function (object, x, y, z)
+AddFunctionExport("SetSound3DLocation", function(object, x, y, z)
+	if object == nil or x == nil or y == nil or z == nil then
+		return false
+	end
 	if StreamedSounds[object] == nil then
 		return false
+	end
+	if StreamedSounds[object].is_attached == true then
+		return false -- Can't sent location of an attached sound
 	end
 
 	-- We need to notify the client about the loction change with a remote event.
@@ -186,8 +210,15 @@ AddFunctionExport("SetSound3DLocation", function (object, x, y, z)
 	return true
 end)
 
-AddFunctionExport("GetSound3DLocation", function (object)
+AddFunctionExport("GetSound3DLocation", function(object)
+	if object == nil then
+		return false
+	end
 	if StreamedSounds[object] == nil then
+		return false
+	end
+
+	if StreamedSounds[object].is_attached == true then
 		return false
 	end
 

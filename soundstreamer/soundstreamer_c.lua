@@ -14,53 +14,103 @@ see https://bluemountains.io/Onset_OpenSourceSoftware_License.txt
 
 local StreamedSounds = { }
 
-local AttachedVehicleSounds = { }
+-- Expose attach types like on the server.
+if ATTACH_NONE == nil then
+	ATTACH_NONE = 0
+end
+if ATTACH_PLAYER == nil then
+	ATTACH_PLAYER = 1
+end
+if ATTACH_VEHICLE == nil then
+	ATTACH_VEHICLE = 2
+end
+if ATTACH_OBJECT == nil then
+	ATTACH_OBJECT = 3
+end
+if ATTACH_NPC == nil then
+	ATTACH_NPC = 4
+end
 
 AddEvent("OnPackageStop", function()
 
-	for _, v in pairs(AttachedVehicleSounds) do
-		DestroySound(v)
+	for k, v in pairs(StreamedSounds) do
+		DestroySound(v.sound)
 	end
 
-	AttachedVehicleSounds = nil
+	StreamedSounds = nil
+
 end)
 
 AddEvent("OnObjectStreamIn", function(object)
 	
+	if StreamedSounds[object] ~= nil then
+		print("ERROR: OnObjectStreamIn("..object..") called where we already have one")
+		return
+	end
+
 	local _soundStream = GetObjectPropertyValue(object, "_soundStream")
 
 	if _soundStream ~= nil then
-		local x, y, z = GetObjectLocation(object)
-		local _soundStreamRadius = GetObjectPropertyValue(object, "_soundStreamRadius")
-		local _soundStreamVolume = GetObjectPropertyValue(object, "_soundStreamVolume")
-		local _soundStreamPitch = GetObjectPropertyValue(object, "_soundStreamPitch")
 
 		StreamedSounds[object] = { }
+		StreamedSounds[object] = _soundStream
 
 		local ObjectActor = GetObjectActor(object)
 
 		-- Set the scale to 0 and make it hidden
-		ObjectActor:SetActorScale3D(FVector(0.0, 0.0, 0.0))
+		ObjectActor:SetActorScale3D(FVector(0.01, 0.01, 0.01))
 		ObjectActor:SetActorHiddenInGame(true)
 
 		-- Alos disable its collision
 		ObjectActor:SetActorEnableCollision(false)
 
+		local x, y, z
+
+		if _soundStream.is_attached == false then
+
+			x, y, z = GetObjectLocation(object)
+
+		elseif _soundStream.is_attached == true then
+
+			if _soundStream.attach == ATTACH_VEHICLE then
+				
+				x, y, z = GetVehicleLocation(_soundStream.id)
+
+			elseif _soundStream.attach == ATTACH_PLAYER then
+
+				x, y, z = GetPlayerLocation(_soundStream.id)
+
+			elseif _soundStream.attach == ATTACH_OBJECT then
+
+				x, y, z = GetObjectLocation(_soundStream.id)				
+
+			elseif _soundStream.attach == ATTACH_NPC then
+
+				x, y, z = GetNPCLocation(_soundStream.id)			
+
+			end
+		end
+
 		-- Create the actual sound
-		StreamedSounds[object].sound = CreateSound3D(_soundStream, x, y, z, _soundStreamRadius)
+		StreamedSounds[object].sound = CreateSound3D(_soundStream.file, x, y, z, _soundStream.radius)
 
 		if StreamedSounds[object].sound == false then
 			if IsGameDevMode() then
-				AddPlayerChat('<span color="#ff0000bb" style="bold" size="10">You have reached the maximum amount of sounds in this area. Remove some sounds or reduce their radius.</>')
+				local msg = "WARNING: Attempting to create streamed 3d sound but there already is a maximum number of sounds in this area. Remove some sounds or reduce their radius."
+				AddPlayerChat('<span color="#ff0000bb" style="bold" size="10">'..msg..'</>')
+				print(msg)
 			end
+			StreamedSounds[object] = nil
+			return
 		else
-			SetSoundPitch(StreamedSounds[object].sound, _soundStreamPitch)
-			SetSoundVolume(StreamedSounds[object].sound, _soundStreamVolume)
+			SetSoundPitch(StreamedSounds[object].sound, _soundStream.pitch)
+			SetSoundVolume(StreamedSounds[object].sound, _soundStream.volume)
 		end
 
 		if IsGameDevMode() then
-			AddPlayerChat("STREAMIN: Server Sound3D "..object)
+			AddPlayerChat("STREAMIN: Server Sound3D for Object "..object)
 		end
+
 	end
 
 end)
@@ -80,82 +130,38 @@ AddEvent("OnObjectStreamOut", function(object)
 
 end)
 
-AddEvent("OnObjectNetworkUpdatePropertyValue", function (object, PropertyName, PropertyValue)
+AddEvent("OnObjectNetworkUpdatePropertyValue", function(object, PropertyName, PropertyValue)
 
 	if StreamedSounds[object] == nil then
 		return
 	end
 
-	if PropertyName == "_soundStreamVolume" then
-		SetSoundVolume(StreamedSounds[object].sound, PropertyValue)
-	elseif PropertyName == "_soundStreamPitch" then
-		SetSoundPitch(StreamedSounds[object].sound, PropertyValue)
+	if PropertyName == "_soundStream" then
+		SetSoundVolume(StreamedSounds[object].sound, PropertyValue.volume)
+		SetSoundPitch(StreamedSounds[object].sound, PropertyValue.pitch)
 	end
 
 end)
 
-AddRemoteEvent("SetStreamedSound3DLocation", function (object, x, y, z)
+AddRemoteEvent("SetStreamedSound3DLocation", function(object, x, y, z)
 	if StreamedSounds[object] == nil then
 		return
 	end
 	SetSound3DLocation(StreamedSounds[object].sound, x, y, z)
 end)
 
-function CreateVehicleAttachedSound(vehicle)
 
-	local _soundStream = GetVehiclePropertyValue(vehicle, "_soundStream")
+AddEvent("OnGameTick", function(DeltaSeconds)
 
-	if _soundStream ~= nil then
-		local x, y, z = GetVehicleLocation(vehicle)
+	for k, v in pairs(StreamedSounds) do
+		if v.is_attached then
+			if v.attach == ATTACH_VEHICLE then
+				if IsValidVehicle(v.id) then
+					local x, y, z = GetVehicleLocation(v.id)
 
-		if IsGameDevMode() then
-			print("Creating attached 3D sound", x, y, z, _soundStream.file, _soundStream.radius)
-		end
-
-		AttachedVehicleSounds[vehicle] = CreateSound3D(_soundStream.file, x, y, z, _soundStream.radius)
-
-		if AttachedVehicleSounds[vehicle] ~= false then
-			SetSoundPitch(AttachedVehicleSounds[vehicle], _soundStream.pitch)
-			SetSoundVolume(AttachedVehicleSounds[vehicle], _soundStream.volume)
-		else
-			AttachedVehicleSounds[vehicle] = nil
-		end
-	end
-end
-
-function DestroyVehicleAttachedSound(vehicle)
-	if AttachedVehicleSounds[vehicle] ~= nil then
-		DestroySound(AttachedVehicleSounds[vehicle])
-		AttachedVehicleSounds[vehicle] = nil
-	end
-end
-
-AddEvent("OnVehicleStreamIn", function (vehicle)
-	CreateVehicleAttachedSound(vehicle)
-end)
-
-AddEvent("OnVehicleStreamOut", function (vehicle)
-	DestroyVehicleAttachedSound(vehicle)
-end)
-
-AddEvent("OnGameTick", function (DeltaSeconds)
-	for k, v in pairs(AttachedVehicleSounds) do
-		local x, y, z = GetVehicleLocation(k)
-
-		SetSound3DLocation(v, x, y, z)		
-	end	
-end)
-
-AddEvent("OnVehicleNetworkUpdatePropertyValue", function(vehicle, PropertyName, PropertyValue)
-
-	if PropertyName == "_soundStream" then
-		if PropertyValue == false then
-			DestroyVehicleAttachedSound(vehicle)
-		elseif PropertyValue ~= nil then
-			-- Delay this to the next tick because GetVehiclePropertyValue in the function would return the old value in this event.
-			Delay(1, function(v)
-				CreateVehicleAttachedSound(v)
-			end, vehicle)
+					SetSound3DLocation(v.sound, x, y, z)				
+				end
+			end
 		end
 	end
 
