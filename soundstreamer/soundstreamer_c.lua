@@ -137,8 +137,20 @@ AddEvent("OnObjectNetworkUpdatePropertyValue", function(object, PropertyName, Pr
 	end
 
 	if PropertyName == "_soundStream" then
+		
+		local CurrentPV = GetObjectPropertyValue(object, PropertyName)
+		if CurrentPV.radius ~= PropertyValue.radius then
+			DestroySound(StreamedSounds[object].sound)
+			StreamedSounds[object].sound = CreateSound3D(StreamedSounds[object].file, x, y, z, PropertyValue.radius)
+		end
+
 		SetSoundVolume(StreamedSounds[object].sound, PropertyValue.volume)
 		SetSoundPitch(StreamedSounds[object].sound, PropertyValue.pitch)
+
+		StreamedSounds[object].volume = PropertyValue.volume
+		StreamedSounds[object].pitch = PropertyValue.pitch
+		StreamedSounds[object].radius = PropertyValue.radius
+		
 	end
 
 end)
@@ -155,13 +167,25 @@ AddEvent("OnGameTick", function(DeltaSeconds)
 
 	for k, v in pairs(StreamedSounds) do
 		if v.is_attached then
+			local x, y, z
 			if v.attach == ATTACH_VEHICLE then
 				if IsValidVehicle(v.id) then
-					local x, y, z = GetVehicleLocation(v.id)
-
-					SetSound3DLocation(v.sound, x, y, z)				
+					x, y, z = GetVehicleLocation(v.id)				
+				end
+			elseif v.attach == ATTACH_PLAYER then
+				if IsValidPlayer(v.id) then
+					x, y, z = GetPlayerLocation(v.id)
+				end
+			elseif v.attach == ATTACH_OBJECT then
+				if IsValidObject(v.id) then
+					x, y, z = GetObjectLocation(v.id)
+				end
+			elseif v.attach == ATTACH_NPC then
+				if IsValidNPC(v.id) then
+					x, y, z = GetNPCLocation(v.id)
 				end
 			end
+			SetSound3DLocation(v.sound, x, y, z)
 		end
 	end
 

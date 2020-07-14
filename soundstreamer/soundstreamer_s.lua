@@ -166,6 +166,22 @@ AddFunctionExport("SetSound3DPitch", function(object, pitch)
 	return true
 end)
 
+AddFunctionExport("SetSound3DRadius", function(object, radius)
+	if object == nil then
+		return false
+	end
+
+	radius = radius or 2500.0
+
+	if StreamedSounds[object] == nil then
+		return false
+	end
+
+	StreamedSounds[object].radius = radius
+	SetObjectPropertyValue(object, "_soundStream", StreamedSounds[object])
+	return true
+end)
+
 AddFunctionExport("SetSound3DDimension", function(object, dimension)
 	if object == nil or dimension == nil then
 		return false
