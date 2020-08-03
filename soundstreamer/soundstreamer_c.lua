@@ -141,6 +141,7 @@ AddEvent("OnObjectNetworkUpdatePropertyValue", function(object, PropertyName, Pr
 		local CurrentPV = GetObjectPropertyValue(object, PropertyName)
 		if CurrentPV.radius ~= PropertyValue.radius then
 			DestroySound(StreamedSounds[object].sound)
+			local x, y, z = GetObjectLocation(object)
 			StreamedSounds[object].sound = CreateSound3D(StreamedSounds[object].file, x, y, z, PropertyValue.radius)
 		end
 
