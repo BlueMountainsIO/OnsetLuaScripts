@@ -24,7 +24,7 @@ AddEvent("OnPackageStop", function()
 
 end)
 
-AddFunctionExport("CreateSound3D", function (sound_file, x, y, z, radius, volume, pitch)
+AddFunctionExport("CreateSound3D", function (sound_file, x, y, z, radius, volume, pitch, bLoop)
 
 	if sound_file == nil or x == nil or y == nil or z == nil then
 		return false
@@ -49,6 +49,7 @@ AddFunctionExport("CreateSound3D", function (sound_file, x, y, z, radius, volume
 	_soundStream.radius = radius
 	_soundStream.volume = volume
 	_soundStream.pitch = pitch
+	_soundStream.loop = bLoop
 
 	SetObjectPropertyValue(object, "_soundStream", _soundStream)
 
@@ -57,7 +58,7 @@ AddFunctionExport("CreateSound3D", function (sound_file, x, y, z, radius, volume
 	return object
 end)
 
-AddFunctionExport("CreateAttachedSound3D", function(attach, id, sound_file, radius, volume, pitch)
+AddFunctionExport("CreateAttachedSound3D", function(attach, id, sound_file, radius, volume, pitch, bLoop)
 
 	if attach == nil or id == nil or sound_file == nil then
 		return false
@@ -81,6 +82,7 @@ AddFunctionExport("CreateAttachedSound3D", function(attach, id, sound_file, radi
 	_soundStream.radius = radius
 	_soundStream.volume = volume
 	_soundStream.pitch = pitch
+	_soundStream.loop = bLoop
 
 	SetObjectPropertyValue(object, "_soundStream", _soundStream)
 

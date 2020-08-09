@@ -191,3 +191,16 @@ AddEvent("OnGameTick", function(DeltaSeconds)
 	end
 
 end)
+
+AddEvent("OnSoundFinished", function(sound)
+	-- Get the streamedsound according to the sound that just stop
+	for k,v in pairs(StreamedSounds) do
+		if v.sound == sound and v.loop == true then -- If we found it and loop is true
+			local x, y, z = GetObjectLocation(k) -- Get the actual position of the object
+			v.sound = CreateSound3D(v.file, x, y, z, v.radius) -- Start a new sound with same properties
+			SetSoundVolume(v.sound, v.volume)
+			SetSoundPitch(v.sound, v.pitch)
+			return
+		end
+	end
+end)
