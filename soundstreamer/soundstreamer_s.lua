@@ -24,7 +24,7 @@ AddEvent("OnPackageStop", function()
 
 end)
 
-AddFunctionExport("CreateSound3D", function (sound_file, x, y, z, radius, volume, pitch)
+AddFunctionExport("CreateSound3D", function (sound_file, x, y, z, radius, volume, pitch, bLoop)
 
 	if sound_file == nil or x == nil or y == nil or z == nil then
 		return false
@@ -33,6 +33,7 @@ AddFunctionExport("CreateSound3D", function (sound_file, x, y, z, radius, volume
 	radius = radius or 2500.0
 	volume = volume or 1.0
 	pitch = pitch or 1.0
+	bLoop = bLoop or false
 
 	-- Create a dummy object that will help us streaming the sound
 	local object = CreateObject(1, x, y, z)
@@ -49,6 +50,7 @@ AddFunctionExport("CreateSound3D", function (sound_file, x, y, z, radius, volume
 	_soundStream.radius = radius
 	_soundStream.volume = volume
 	_soundStream.pitch = pitch
+	_soundStream.loop = bLoop
 
 	SetObjectPropertyValue(object, "_soundStream", _soundStream)
 
@@ -57,7 +59,7 @@ AddFunctionExport("CreateSound3D", function (sound_file, x, y, z, radius, volume
 	return object
 end)
 
-AddFunctionExport("CreateAttachedSound3D", function(attach, id, sound_file, radius, volume, pitch)
+AddFunctionExport("CreateAttachedSound3D", function(attach, id, sound_file, radius, volume, pitch, bLoop)
 
 	if attach == nil or id == nil or sound_file == nil then
 		return false
@@ -66,6 +68,7 @@ AddFunctionExport("CreateAttachedSound3D", function(attach, id, sound_file, radi
 	radius = radius or 2500.0
 	volume = volume or 1.0
 	pitch = pitch or 1.0
+	bLoop = bLoop or false
 
 	local object = CreateObject(1, 0.0, 0.0, 0.0)
 	
@@ -81,6 +84,7 @@ AddFunctionExport("CreateAttachedSound3D", function(attach, id, sound_file, radi
 	_soundStream.radius = radius
 	_soundStream.volume = volume
 	_soundStream.pitch = pitch
+	_soundStream.loop = bLoop
 
 	SetObjectPropertyValue(object, "_soundStream", _soundStream)
 

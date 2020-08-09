@@ -92,7 +92,7 @@ AddEvent("OnObjectStreamIn", function(object)
 		end
 
 		-- Create the actual sound
-		StreamedSounds[object].sound = CreateSound3D(_soundStream.file, x, y, z, _soundStream.radius)
+		StreamedSounds[object].sound = CreateSound3D(_soundStream.file, x, y, z, _soundStream.radius, _soundStream.loop)
 
 		if StreamedSounds[object].sound == false then
 			if IsGameDevMode() then
@@ -142,7 +142,7 @@ AddEvent("OnObjectNetworkUpdatePropertyValue", function(object, PropertyName, Pr
 		if CurrentPV.radius ~= PropertyValue.radius then
 			DestroySound(StreamedSounds[object].sound)
 			local x, y, z = GetObjectLocation(object)
-			StreamedSounds[object].sound = CreateSound3D(StreamedSounds[object].file, x, y, z, PropertyValue.radius)
+			StreamedSounds[object].sound = CreateSound3D(StreamedSounds[object].file, x, y, z, PropertyValue.radius, _soundStream.loop)
 		end
 
 		SetSoundVolume(StreamedSounds[object].sound, PropertyValue.volume)
