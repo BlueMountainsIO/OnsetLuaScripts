@@ -33,6 +33,7 @@ AddFunctionExport("CreateSound3D", function (sound_file, x, y, z, radius, volume
 	radius = radius or 2500.0
 	volume = volume or 1.0
 	pitch = pitch or 1.0
+	bLoop = bLoop or false
 
 	-- Create a dummy object that will help us streaming the sound
 	local object = CreateObject(1, x, y, z)
@@ -67,6 +68,7 @@ AddFunctionExport("CreateAttachedSound3D", function(attach, id, sound_file, radi
 	radius = radius or 2500.0
 	volume = volume or 1.0
 	pitch = pitch or 1.0
+	bLoop = bLoop or false
 
 	local object = CreateObject(1, 0.0, 0.0, 0.0)
 	

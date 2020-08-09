@@ -92,7 +92,7 @@ AddEvent("OnObjectStreamIn", function(object)
 		end
 
 		-- Create the actual sound
-		StreamedSounds[object].sound = CreateSound3D(_soundStream.file, x, y, z, _soundStream.radius)
+		StreamedSounds[object].sound = CreateSound3D(_soundStream.file, x, y, z, _soundStream.radius, _soundStream.loop)
 
 		if StreamedSounds[object].sound == false then
 			if IsGameDevMode() then
@@ -142,7 +142,7 @@ AddEvent("OnObjectNetworkUpdatePropertyValue", function(object, PropertyName, Pr
 		if CurrentPV.radius ~= PropertyValue.radius then
 			DestroySound(StreamedSounds[object].sound)
 			local x, y, z = GetObjectLocation(object)
-			StreamedSounds[object].sound = CreateSound3D(StreamedSounds[object].file, x, y, z, PropertyValue.radius)
+			StreamedSounds[object].sound = CreateSound3D(StreamedSounds[object].file, x, y, z, PropertyValue.radius, _soundStream.loop)
 		end
 
 		SetSoundVolume(StreamedSounds[object].sound, PropertyValue.volume)
@@ -190,17 +190,4 @@ AddEvent("OnGameTick", function(DeltaSeconds)
 		end
 	end
 
-end)
-
-AddEvent("OnSoundFinished", function(sound)
-	-- Get the streamedsound according to the sound that just stop
-	for k,v in pairs(StreamedSounds) do
-		if v.sound == sound and v.loop == true then -- If we found it and loop is true
-			local x, y, z = GetObjectLocation(k) -- Get the actual position of the object
-			v.sound = CreateSound3D(v.file, x, y, z, v.radius) -- Start a new sound with same properties
-			SetSoundVolume(v.sound, v.volume)
-			SetSoundPitch(v.sound, v.pitch)
-			return
-		end
-	end
 end)
