@@ -12,39 +12,29 @@ You should have received a copy of the Onset Open Source License along with this
 see https://bluemountains.io/Onset_OpenSourceSoftware_License.txt
 ]]--
 
-function VehicleJump(player)
-	local vehicle = GetPlayerVehicle(player)
-	if (vehicle ~= 0) then
-		if GetPlayerVehicleSeat(player) == 1 then
-			SetVehicleLinearVelocity(vehicle, 0.0, 0.0, 800.0, false)
-		end
-	end
-end
-AddRemoteEvent("VehicleJump", VehicleJump)
-
-function VehicleVelocityReset(player)
-	local vehicle = GetPlayerVehicle(player)
-	if (vehicle ~= 0) then
-		SetVehicleLinearVelocity(vehicle, 0.0, 0.0, 0.0, true)
-		SetVehicleAngularVelocity(vehicle, 0.0, 0.0, 0.0, true)
-		local rx, ry, rz = GetVehicleRotation(vehicle)
-		-- Reset pitch and roll, leave yaw alone
-		SetVehicleRotation(vehicle, 0.0, ry, 0.0)
-	end
-end
-AddRemoteEvent("VehicleVelocityReset", VehicleVelocityReset)
-
-function VehicleAccel(player)
-	local vehicle = GetPlayerVehicle(player)
-	if (vehicle ~= 0) then
-		if (GetPlayerVehicleSeat(player) == 1) then
-			local x, y, z = GetVehicleVelocity(vehicle)
-			local size = x * x + y * y + z * z
-			if (size < 25000000) then
-				local mult = 0.3
-				SetVehicleLinearVelocity(vehicle, x * mult, y * mult, z * mult, false)
+local function OnKeyPress(key)
+	local vehicle = GetPlayerVehicle(GetPlayerId())
+	if vehicle ~= 0 then
+		local VehicleSkeletalMeshComponent = GetVehicleSkeletalMeshComponent(vehicle)
+		if GetVehicleDriver(vehicle) == GetPlayerId() then
+			if key == 'H' then
+				VehicleSkeletalMeshComponent:SetPhysicsLinearVelocity(FVector(0.0, 0.0, 800.0), true)
 			end
-		end
+			
+			if (key == '2' or key == 'é') then
+				VehicleSkeletalMeshComponent:SetPhysicsLinearVelocity(FVector(0.0, 0.0, 0.0), false)
+				VehicleSkeletalMeshComponent:SetPhysicsAngularVelocityInDegrees(FVector(0.0, 0.0, 0.0), false)
+			end
+			
+			if key == "Left Mouse Button" then
+				local x, y, z = GetVehicleVelocity(vehicle)
+			    local size = x * x + y * y + z * z
+				if (size < 25000000) then
+					local mult = 0.3
+					VehicleSkeletalMeshComponent:SetPhysicsLinearVelocity(FVector(x * mult, y * mult, z * mult), true)
+				end
+			end
+	    end
 	end
 end
-AddRemoteEvent("VehicleAccel", VehicleAccel)
+AddEvent("OnKeyPress", OnKeyPress)
