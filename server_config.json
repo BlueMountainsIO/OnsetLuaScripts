@@ -15,6 +15,7 @@
 	],
 	"packages": [
 		"default",
+		"elevator",
 		"webgui",
 		"trafficlights",
 		"horizon",
