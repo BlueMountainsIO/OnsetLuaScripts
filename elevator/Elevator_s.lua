@@ -167,11 +167,3 @@ function OpenCloseDoors(object, openclose)
 	
 	return true
 end
-
-AddCommand("e", function(p)
-	SetPlayerLocation(p, 172721.15625, 215864.71875, 1280.149902)
-end)
-
-AddCommand("e2", function(p)
-	SetPlayerLocation(p, 172721.15625, 215864.71875, 1681.149902)
-end)
