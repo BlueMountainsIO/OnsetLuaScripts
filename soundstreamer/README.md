@@ -28,7 +28,7 @@ GetSound3DLocation(soundid)
 -- volume: default 1.0
 -- pitch: default 1.0
 -- You can destroy attach sounds with DestroySound3D
-CreateAttachedSound3D(attach, id, sound_file, radius, volume, pitch)
+CreateAttachedSound3D(attach, id, sound_file, radius, volume, pitch, loop)
 GetAttached3DSounds(attach, id)
 IsAttachedSound3D(soundid)
 ```
