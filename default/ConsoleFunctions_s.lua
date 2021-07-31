@@ -102,6 +102,10 @@ AddConsoleCommand("list", "List all started packages", function()
 	end
 end)
 
-AddConsoleCommand("exit", "Stops the server", function(reason)
-	ServerExit(reason)
+AddConsoleCommand("exit", "Stops the server", function(...)
+	if ... then
+		ServerExit(table.concat({...}, " "))
+	else
+		ServerExit()
+	end
 end)
