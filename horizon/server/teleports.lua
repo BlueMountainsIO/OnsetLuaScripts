@@ -48,6 +48,16 @@ function cmd_police(player)
 end
 AddCommand("police", cmd_police)
 
+function cmd_apartment(player)
+	TeleportTo(player, 193612.0, 203332.0, 8582.0, -90.0)
+end
+AddCommand("apartment", cmd_apartment)
+
+function cmd_apartment2(player)
+	TeleportTo(player, 193612.000000, 203332.000000, 8254.000000, -90.0)
+end
+AddCommand("apartment2", cmd_apartment2)
+
 function cmd_gas(player)
 	TeleportTo(player, 125773.000000, 80246.000000, 1645.000000, 90.0)
 end
@@ -69,7 +79,7 @@ end
 AddCommand("pancake", cmd_pancake)
 
 function cmd_office(player)
-	TeleportTo(player, 191711.000000, 191871.000000, 9377.000000)
+	TeleportTo(player, 190579.14, 193664.9, 11217.762, -90.0)
 end
 AddCommand("office", cmd_office)
 
@@ -112,6 +122,11 @@ function cmd_town(player)
 	TeleportTo(player, -182821.000000, -41675.000000, 1160.000000, -90.0)
 end
 AddCommand("town", cmd_town)
+
+function cmd_docks(player)
+	TeleportTo(player, 42597.9, 202975.03, 550.0, -90.0)
+end
+AddCommand("docks", cmd_docks)
 
 function cmd_guns(player)
 	TeleportTo(player, 207078.484375, 192689.109375, 1306.94921875, 175.41589355469)

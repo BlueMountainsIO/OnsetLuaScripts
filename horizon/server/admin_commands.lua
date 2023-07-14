@@ -416,7 +416,7 @@ function cmd_go(player, otherplayer)
 
 	local x, y, z = GetPlayerLocation(otherplayer)
 	SetPlayerLocation(player, x, y, z + 50.0 + 10.0)	
-	AddPlayerChat(player, "You have teleported to "..GetPlayerName(player))
+	AddPlayerChat(player, "You have teleported to "..GetPlayerName(otherplayer))
 end
 AddCommand("go", cmd_go)
 

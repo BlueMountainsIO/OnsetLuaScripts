@@ -209,6 +209,17 @@ function cmd_time(player, player_time)
 end
 AddCommand("time", cmd_time)
 
+function cmd_clouddensity(player, density)
+	if (density == nil) then
+		return AddPlayerChat(player, "Usage: /clouddensity <density 0-4>")
+	end
+	
+	density = tonumber(density)
+
+	CallRemoteEvent(player, "ClientSetCloudDensity", density)
+end
+AddCommand("clouddensity", cmd_clouddensity)
+
 function cmd_fog(player, fog)
 	fog = tonumber(fog)
 

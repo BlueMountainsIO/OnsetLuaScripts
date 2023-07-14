@@ -248,6 +248,7 @@ function CreatePlayerData(player)
 	PlayerData[player].mute = 0
 	PlayerData[player].vehicle = 0
 	PlayerData[player].hat = 0
+	PlayerData[player].radio = 0
 	PlayerData[player].chat_cooldown = 0
 	PlayerData[player].cmd_cooldown = 0
 	PlayerData[player].report_cooldown = 0

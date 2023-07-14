@@ -65,6 +65,14 @@ local function OnPackageStart()
 	SetObjectPropertyValue(TextureObject, "_texture", "static")
 	SetObjectPropertyValue(TextureObject, "_textureFile", GetPackageName().."/client/files/AI.png")
 	SetObjectScale(TextureObject, 0.5, 0.5, 1.0)
+
+	local ApartmentObject = CreateObject(1, 193569.000000, 203176.000000, 8455.000000, 0.0, 180.0, 0.0, 0.1, 0.1, 0.1)
+	SetObjectPropertyValue(ApartmentObject, "_blueprintPrefab", "/Game/Geometry/Prefabs/PF_Apartment_01b")
+	SetObjectStreamDistance(ApartmentObject, 5000.0)
+
+	ApartmentObject = CreateObject(1, 193569.0, 203176.0, 8144.0, 0.0, 180.0, 0.0, 0.1, 0.1, 0.1)
+	SetObjectPropertyValue(ApartmentObject, "_blueprintPrefab", "/Game/Geometry/Prefabs/PF_Apartment_01a")
+	SetObjectStreamDistance(ApartmentObject, 5000.0)
 end
 AddEvent("OnPackageStart", OnPackageStart)
 
